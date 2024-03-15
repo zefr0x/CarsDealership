@@ -52,16 +52,17 @@ class LoginDialog extends JDialog {
             // WARN: This code is just for testing, tell database logic implemented.
             if (userNameField.getText().equals("admin")) {
                 LoginDialog.this.userType = UserType.Admin;
+                LoginDialog.this.setVisible(false);
             } else if (userNameField.getText().equals("salesman")) {
                 LoginDialog.this.userType = UserType.SalesMan;
+                LoginDialog.this.setVisible(false);
             } else if (userNameField.getText().equals("costumer")) {
                 LoginDialog.this.userType = UserType.Costumer;
+                LoginDialog.this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid login credentials", "Error: Invalid login credentials",
                         JOptionPane.ERROR_MESSAGE);
             }
-
-            LoginDialog.this.setVisible(false);
         }
     }
 
