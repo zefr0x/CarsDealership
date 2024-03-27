@@ -32,8 +32,8 @@ class BrowseProductsPage extends JPanel {
         Box searching = Box.createHorizontalBox();
         searching.setAlignmentX(Component.LEFT_ALIGNMENT);
         //image and button
-        ImageIcon normal = new ImageIcon("C:/Users/husai/IdeaProjects/CarsDealership/app/search.png");
-        ImageIcon pressed = new ImageIcon("C:/Users/husai/IdeaProjects/CarsDealership/app/search.png");
+        ImageIcon normal = new ImageIcon(getClass().getResource("/normal.png"));
+        ImageIcon pressed = new ImageIcon(getClass().getResource("/pressed.png"));
         JButton button = new JButton(normal);
         button.setPreferredSize(new Dimension(30, 30));
         button.getModel().addChangeListener(new ChangeListener() {
@@ -52,7 +52,7 @@ class BrowseProductsPage extends JPanel {
         JTextField searchbar = new JTextField();
         searchbar.setMaximumSize(new Dimension(140, 30));
         searchbar.setPreferredSize(new Dimension(140,30));
-        JLabel searchlabel = new JLabel("Search:");
+        JLabel searchlabel = new JLabel("Product Name:");
         searchlabel.setFont(new Font("Serf", Font.PLAIN, 18));
         //adding components to body box
         bodyBox.add(searching);
@@ -67,7 +67,7 @@ class BrowseProductsPage extends JPanel {
         filter.setAlignmentX(Component.LEFT_ALIGNMENT);
         //Vehicle Type Filter
         JLabel product = new JLabel("Vehicle Type: ");
-        product.setFont(new Font("Serf", Font.PLAIN, 18));
+        product.setFont(new Font("Serif", Font.PLAIN, 18));
         JComboBox<String> type = new JComboBox<>(new String[]{"Car", "Caravan", "Bus"});
         type.setMaximumSize(new Dimension(100, 30));
         type.setPreferredSize(new Dimension(100, 30));
@@ -76,7 +76,6 @@ class BrowseProductsPage extends JPanel {
         filter.add(product);
         filter.add(type);
 
-
         //Colour Box
         bodyBox.add(Box.createVerticalStrut(10));
         Box colour = Box.createHorizontalBox();
@@ -84,19 +83,13 @@ class BrowseProductsPage extends JPanel {
         //Vehicle Colour
         JLabel colr_label = new JLabel("Colour: ");
         colr_label.setFont(new Font("Serf", Font.PLAIN, 18));
-        JList<String> colourList = new JList<>(new String[]{"Red", "Navy Blue", "Dark Brown", "Black", "Silver", "White"});
-        colourList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        colourList.setVisibleRowCount(3);
-        colourList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        JScrollPane scrollPane = new JScrollPane(colourList);
-        scrollPane.setMaximumSize(new Dimension(50,50));
-        scrollPane.setPreferredSize(new Dimension(50,50));
-
+        JComboBox<String> colourList = new JComboBox<>(new String[]{"Black", "Red", "Navy Blue", "Dark Brown", "Silver", "White"});
+        colourList.setMaximumSize(new Dimension(100, 30));
+        colourList.setPreferredSize(new Dimension(100, 30));
         //adding Colours
         bodyBox.add(colour);
         colour.add(colr_label);
         colour.add(colourList);
-        colour.add(scrollPane);
 
         //new box for fuel type
         bodyBox.add(Box.createVerticalStrut(10));
