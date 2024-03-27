@@ -20,7 +20,7 @@ public class MainWindow extends JFrame {
     MainWindow() {
         super("Cars Dealership");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new java.awt.Dimension(1000, 700));
+        this.setMinimumSize(new java.awt.Dimension(700, 500));
 
         container = this.getContentPane();
         cardLayout = new CardLayout();
