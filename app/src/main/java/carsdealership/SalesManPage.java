@@ -55,11 +55,17 @@ class SalesManPage extends JPanel {
         salesManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         bodyBox.add(salesManagmentBox);
 
-        JButton createNewTransaction = new JButton("Sell Product to Costumer");
-        createNewTransaction.addActionListener(
+        JButton createNewSell = new JButton("Sell Product to Costumer");
+        createNewSell.addActionListener(
                 e -> {
                 });
-        salesManagmentBox.add(createNewTransaction);
+        salesManagmentBox.add(createNewSell);
+
+        JButton revertSell = new JButton("Revert a Purchas");
+        revertSell.addActionListener(
+                e -> {
+                });
+        salesManagmentBox.add(revertSell);
 
         // Database search and browser section
         bodyBox.add(Box.createVerticalStrut(20));
@@ -70,13 +76,13 @@ class SalesManPage extends JPanel {
         bodyBox.add(searchManagementBox);
 
         JButton costumersList = new JButton("Costumers List Dialog");
-        createNewTransaction.addActionListener(
+        costumersList.addActionListener(
                 e -> {
                 });
         searchManagementBox.add(costumersList);
 
         JButton salesList = new JButton("Sales List Dialog");
-        createNewTransaction.addActionListener(
+        salesList.addActionListener(
                 e -> {
                 });
         searchManagementBox.add(salesList);
