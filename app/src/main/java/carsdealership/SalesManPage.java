@@ -1,9 +1,16 @@
 package carsdealership;
 
-import javax.swing.*;
-
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.border.TitledBorder;
+import javax.swing.JLabel;
 
 class SalesManPage extends JPanel {
     MainWindow parent;
@@ -23,61 +30,79 @@ class SalesManPage extends JPanel {
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
         this.add(footerPanel, BorderLayout.SOUTH);
 
-        JLabel title = new JLabel("Salesman Page");
+        // Page Title
+        JLabel title = new JLabel("SalesMan Page");
         title.setFont(new Font("Serf", Font.BOLD, 20));
         headerPanel.add(title);
 
-
+        // Costumer accounts section
         bodyBox.add(Box.createVerticalStrut(20));
-        bodyBox.add(new JLabel("Customer related buttons"));
-        Box salesManagementBox = Box.createHorizontalBox();
-        salesManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bodyBox.add(salesManagementBox);
+        Box costumersManagementBox = Box.createHorizontalBox();
+        costumersManagementBox.setBorder(BorderFactory.createTitledBorder("Customer Account Managment"));
+        costumersManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bodyBox.add(costumersManagementBox);
 
-        JButton addNewCustomer = new JButton("Add new customer");
+        JButton addNewCustomer = new JButton("Create New Costumer Account");
         addNewCustomer.addActionListener(
-                e-> {}
-        );
-        salesManagementBox.add(addNewCustomer);
+                e -> {
+                });
+        costumersManagementBox.add(addNewCustomer);
 
-
-        JButton createNewTransaction = new JButton("Create new transaction");
-        createNewTransaction.addActionListener(
-                e->{}
-        );
-        salesManagementBox.add(createNewTransaction);
-
-
+        // Sales managment section
         bodyBox.add(Box.createVerticalStrut(20));
-        bodyBox.add(new JLabel("Searching related buttons"));
+        Box salesManagmentBox = Box.createHorizontalBox();
+        salesManagmentBox.setBorder(BorderFactory.createTitledBorder("Sales Managment"));
+        salesManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bodyBox.add(salesManagmentBox);
+
+        JButton createNewTransaction = new JButton("Sell Product to Costumer");
+        createNewTransaction.addActionListener(
+                e -> {
+                });
+        salesManagmentBox.add(createNewTransaction);
+
+        // Database search and browser section
+        bodyBox.add(Box.createVerticalStrut(20));
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("Search/Browse DataBase");
         Box searchManagementBox = Box.createHorizontalBox();
         searchManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        searchManagementBox.setBorder(titledBorder);
         bodyBox.add(searchManagementBox);
 
+        JButton costumersList = new JButton("Costumers List Dialog");
+        createNewTransaction.addActionListener(
+                e -> {
+                });
+        searchManagementBox.add(costumersList);
 
-        JLabel searchLabel = new JLabel("search for customers: ");
-        searchManagementBox.add(searchLabel);
+        JButton salesList = new JButton("Sales List Dialog");
+        createNewTransaction.addActionListener(
+                e -> {
+                });
+        searchManagementBox.add(salesList);
 
-        JTextField searchCustomers = new JTextField();
-        searchCustomers.setMaximumSize(new Dimension(150, 30));
-        searchCustomers.setPreferredSize(new Dimension(150, 30));
-        searchCustomers.addActionListener(
-                e->{}
-        );
-        searchManagementBox.add(searchCustomers);
+        // Statstics section
+        bodyBox.add(Box.createVerticalStrut(20));
+        Box myStatisticsBox = Box.createHorizontalBox();
+        myStatisticsBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        myStatisticsBox.setBorder(BorderFactory.createTitledBorder("My Statstics"));
+        bodyBox.add(myStatisticsBox);
 
+        myStatisticsBox.add(new JLabel("Sales by Me: 0"));
+        myStatisticsBox.add(Box.createRigidArea(new Dimension(20, 0)));
+        myStatisticsBox.add(new JLabel("Related Costumers: 0"));
 
-        JButton passwordChanger = new JButton("Change password");
+        // Footer
+        JButton passwordChanger = new JButton("Change Password");
         passwordChanger.addActionListener(
-                e->{}
-        );
+                e -> {
+                });
         footerPanel.add(passwordChanger);
 
-
-        JButton deleteAccount = new JButton("Delete account");
+        JButton deleteAccount = new JButton("Delete Account");
         deleteAccount.addActionListener(
-                e->{}
-        );
+                e -> {
+                });
         footerPanel.add(deleteAccount);
 
         JButton logoutButton = new JButton("Logout");

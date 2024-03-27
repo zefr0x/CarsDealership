@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
 
 class AdminPage extends JPanel {
     MainWindow parent;
@@ -34,8 +35,8 @@ class AdminPage extends JPanel {
 
         // Users managment section
         bodyBox.add(Box.createVerticalStrut(20));
-        bodyBox.add(new JLabel("System Users Managment"));
         Box usersManagmentBox = Box.createHorizontalBox();
+        usersManagmentBox.setBorder(BorderFactory.createTitledBorder("System Users Managment"));
         usersManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         bodyBox.add(usersManagmentBox);
 
@@ -55,8 +56,8 @@ class AdminPage extends JPanel {
 
         // Products managment section
         bodyBox.add(Box.createVerticalStrut(20));
-        bodyBox.add(new JLabel("Products Managment"));
         Box productsManagmentBox = Box.createHorizontalBox();
+        productsManagmentBox.setBorder(BorderFactory.createTitledBorder("Products Managment"));
         productsManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         bodyBox.add(productsManagmentBox);
 
@@ -83,8 +84,8 @@ class AdminPage extends JPanel {
 
         // Reports section
         bodyBox.add(Box.createVerticalStrut(20));
-        bodyBox.add(new JLabel("System Reports"));
         Box reportsBox = Box.createHorizontalBox();
+        reportsBox.setBorder(BorderFactory.createTitledBorder("System Reports"));
         reportsBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         bodyBox.add(reportsBox);
 
