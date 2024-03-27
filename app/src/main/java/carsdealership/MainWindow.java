@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class MainWindow extends JFrame {
     static final String MAIN_PANEL = "MAIN_PANEL";
     static final String ADMIN_MAIN_PANEL = "ADMIN_MAIN_PANEL";
-    static final String SALESMAN_MAIN_PANEL = "SALESMANE_MAIN_PANEL";
+    static final String SALESMAN_MAIN_PANEL = "SALESMAN_MAIN_PANEL";
     static final String COSTUMER_MAIN_PANEL = "COSTUMER_MAIN_PANEL";
     static final String PRODUCTS_BROWSER_PANEL = "PRODUCTS_BROWSER_PANEL";
 
