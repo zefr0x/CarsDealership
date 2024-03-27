@@ -32,8 +32,8 @@ class BrowseProductsPage extends JPanel {
         Box searching = Box.createHorizontalBox();
         searching.setAlignmentX(Component.LEFT_ALIGNMENT);
         //image and button
-        ImageIcon normal = new ImageIcon(getClass().getResource("/normal.png"));
-        ImageIcon pressed = new ImageIcon(getClass().getResource("/pressed.png"));
+        ImageIcon normal = new ImageIcon(getClass().getResource("/search.png"));
+        ImageIcon pressed = new ImageIcon(getClass().getResource("/mungus.png"));
         JButton button = new JButton(normal);
         button.setPreferredSize(new Dimension(30, 30));
         button.getModel().addChangeListener(new ChangeListener() {
