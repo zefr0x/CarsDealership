@@ -4,9 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
@@ -45,6 +52,8 @@ class SalesManPage extends JPanel {
         JButton addNewCustomer = new JButton("Create New Costumer Account");
         addNewCustomer.addActionListener(
                 e -> {
+                    CreateCostumerAccountDialog dialog = new CreateCostumerAccountDialog(parent, true);
+                    dialog.setVisible(true);
                 });
         costumersManagementBox.add(addNewCustomer);
 
@@ -116,4 +125,70 @@ class SalesManPage extends JPanel {
                 e -> parent.container.remove(this));
         footerPanel.add(logoutButton);
     }
+}
+
+class CreateCostumerAccountDialog extends JDialog {
+    JTextField userNameField;
+    JPasswordField userPasswordField;
+    JTextField firstName;
+    JTextField lastName;
+    JTextField salary;
+    JTextField nationality;
+    JTextField phoneNumber;
+    JTextField emailAddress;
+
+    CreateCostumerAccountDialog(final JFrame parent, boolean modal) {
+        super(parent, modal);
+        this.setMinimumSize(new java.awt.Dimension(300, 400));
+        this.setLayout(new GridLayout(10, 2));
+
+        this.userNameField = new JTextField();
+        this.add(new JLabel("Username"));
+        this.add(this.userNameField);
+
+        this.userPasswordField = new JPasswordField();
+        this.add(new JLabel("Password"));
+        this.add(this.userPasswordField);
+
+        this.firstName = new JTextField();
+        this.add(new JLabel("First Name"));
+        this.add(this.firstName);
+
+        this.lastName = new JTextField();
+        this.add(new JLabel("Last Name"));
+        this.add(this.lastName);
+
+        this.salary = new JTextField();
+        this.add(new JLabel("Salary"));
+        this.add(this.salary);
+
+        this.nationality = new JTextField();
+        this.add(new JLabel("Nationality"));
+        this.add(this.nationality);
+
+        this.phoneNumber = new JTextField();
+        this.add(new JLabel("Phone Number"));
+        this.add(this.phoneNumber);
+
+        this.emailAddress = new JTextField();
+        this.add(new JLabel("Email Address"));
+        this.add(this.emailAddress);
+
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(new CreateButtonListener());
+        this.add(createButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(e -> this.setVisible(false));
+        this.add(cancelButton);
+    }
+
+    private class CreateButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            // TODO: Validate data than close dialog.
+        }
+    }
+
+    // TODO: Implement getters and setters.
 }

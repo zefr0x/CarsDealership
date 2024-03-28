@@ -98,9 +98,9 @@ class BrowseProductsPage extends JPanel {
         //Fuel types
         JLabel fuelName = new JLabel("Fuel Type: ");
         fuelName.setFont(new Font("Serf", Font.PLAIN, 18));
-        JCheckBox gas1 = new JCheckBox("91 ");
+        JCheckBox gas1 = new JCheckBox("Gasoline91 ");
         gas1.setFont(new Font("Serf", Font.PLAIN, 14));
-        JCheckBox gas2 = new JCheckBox("95 ");
+        JCheckBox gas2 = new JCheckBox("Gasoline95 ");
         gas2.setFont(new Font("Serf", Font.PLAIN, 14));
         JCheckBox gas3 = new JCheckBox("Diesel ");
         gas3.setFont(new Font("Serf", Font.PLAIN, 14));
