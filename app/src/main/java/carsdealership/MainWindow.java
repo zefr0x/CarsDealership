@@ -1,9 +1,13 @@
 package carsdealership;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,25 +24,31 @@ public class MainWindow extends JFrame {
     MainWindow() {
         super("Cars Dealership");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new java.awt.Dimension(700, 500));
+        this.setMinimumSize(new java.awt.Dimension(900, 700));
 
         container = this.getContentPane();
         cardLayout = new CardLayout();
         container.setLayout(cardLayout);
 
         JPanel mainPage = new JPanel();
+        mainPage.setLayout(new BorderLayout());
         container.add(mainPage, MAIN_PANEL);
+
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        mainPage.add(headerPanel, BorderLayout.NORTH);
+
+        mainPage.add(new JLabel("", new ImageIcon(getClass().getResource("/logo.png")), JLabel.CENTER));
 
         JButton loginButton = new JButton("Login to User Account");
         loginButton.addActionListener(new LoginButtonListener());
-        mainPage.add(loginButton);
+        headerPanel.add(loginButton);
 
         JButton openBrowserButton = new JButton("Browse Avialable Products");
         openBrowserButton.addActionListener(e -> {
             this.add(new BrowseProductsPage(this), PRODUCTS_BROWSER_PANEL);
             this.cardLayout.show(this.container, PRODUCTS_BROWSER_PANEL);
         });
-        mainPage.add(openBrowserButton);
+        headerPanel.add(openBrowserButton);
     }
 
     private class LoginButtonListener implements ActionListener {
