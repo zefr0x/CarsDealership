@@ -38,13 +38,14 @@ class CostumerPage extends JPanel {
         headerPanel.add(pageTitle);
 
         //
-        JButton ChooseAndBuy = new JButton("Select and Buy a Product");
+        JButton Select = new JButton("Select and Add Product to Cart");
+        JButton Pay = new JButton("Pay Selected Products");
         JButton ShowPreviousPurchases = new JButton("Previous Purchases");
 
         PreviousPurchasesButtonListener SPPListener = new PreviousPurchasesButtonListener();
         ShowPreviousPurchases.addActionListener(SPPListener);
 
-        bodyBox.add(ChooseAndBuy);
+        bodyBox.add(Select);
         bodyBox.add(ShowPreviousPurchases);
 
         // Statstics section
@@ -55,6 +56,17 @@ class CostumerPage extends JPanel {
         bodyBox.add(myStatisticsBox);
 
         myStatisticsBox.add(new JLabel("Count of Purchases: 0"));
+
+        // Puchase cart section
+        bodyBox.add(Box.createVerticalStrut(20));
+        Box cart = Box.createHorizontalBox();
+        cart.setAlignmentX(Component.LEFT_ALIGNMENT);
+        cart.setBorder(BorderFactory.createTitledBorder("My Cart"));
+        bodyBox.add(cart);
+
+        cart.add(new JLabel("You have no products currently in your cart!"));
+
+        bodyBox.add(Pay);
 
         // Footer section
         JButton DeleteAccountButton = new JButton("Delete My Account");

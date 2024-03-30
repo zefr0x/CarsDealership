@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
         loginButton.addActionListener(new LoginButtonListener());
         headerPanel.add(loginButton);
 
-        JButton openBrowserButton = new JButton("Browse Avialable Products");
+        JButton openBrowserButton = new JButton("Browse Available Products");
         openBrowserButton.addActionListener(e -> {
             this.add(new BrowseProductsPage(this), PRODUCTS_BROWSER_PANEL);
             this.cardLayout.show(this.container, PRODUCTS_BROWSER_PANEL);

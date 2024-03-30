@@ -44,10 +44,10 @@ class AdminPage extends JPanel {
 
         // Users managment section
         bodyBox.add(Box.createVerticalStrut(20));
-        Box usersManagmentBox = Box.createHorizontalBox();
-        usersManagmentBox.setBorder(BorderFactory.createTitledBorder("System Users Managment"));
-        usersManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bodyBox.add(usersManagmentBox);
+        Box usersManagementBox = Box.createHorizontalBox();
+        usersManagementBox.setBorder(BorderFactory.createTitledBorder("System Users Management"));
+        usersManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bodyBox.add(usersManagementBox);
 
         JButton newManagerButton = new JButton("Add New Admin");
         newManagerButton.addActionListener(
@@ -55,7 +55,7 @@ class AdminPage extends JPanel {
                     CreateAdminAccountDialog dialog = new CreateAdminAccountDialog(parent, true);
                     dialog.setVisible(true);
                 });
-        usersManagmentBox.add(newManagerButton);
+        usersManagementBox.add(newManagerButton);
 
         JButton newSellerButton = new JButton("Add New SalesMan Account");
         newSellerButton.addActionListener(
@@ -63,28 +63,28 @@ class AdminPage extends JPanel {
                     CreateSalesManAccountDialog dialog = new CreateSalesManAccountDialog(parent, true);
                     dialog.setVisible(true);
                 });
-        usersManagmentBox.add(newSellerButton);
+        usersManagementBox.add(newSellerButton);
 
         JButton asociateBranchWithSalesMan = new JButton("Asociate Branch With SalesMan");
         asociateBranchWithSalesMan.addActionListener(
                 e -> {
 
                 });
-        usersManagmentBox.add(asociateBranchWithSalesMan);
+        usersManagementBox.add(asociateBranchWithSalesMan);
 
         JButton asociateProductTypeWithSalesMan = new JButton("Asociate Product Type With SalesMan");
         asociateProductTypeWithSalesMan.addActionListener(
                 e -> {
 
                 });
-        usersManagmentBox.add(asociateProductTypeWithSalesMan);
+        usersManagementBox.add(asociateProductTypeWithSalesMan);
 
         // Products managment section
         bodyBox.add(Box.createVerticalStrut(20));
-        Box productsManagmentBox = Box.createHorizontalBox();
-        productsManagmentBox.setBorder(BorderFactory.createTitledBorder("Products Managment"));
-        productsManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bodyBox.add(productsManagmentBox);
+        Box productsManagementBox = Box.createHorizontalBox();
+        productsManagementBox.setBorder(BorderFactory.createTitledBorder("Products Management"));
+        productsManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bodyBox.add(productsManagementBox);
 
         JButton newItemButton = new JButton("Create New Product");
         newItemButton.addActionListener(
@@ -92,21 +92,21 @@ class AdminPage extends JPanel {
                     CreateProductDialog dialog = new CreateProductDialog(parent, true);
                     dialog.setVisible(true);
                 });
-        productsManagmentBox.add(newItemButton);
+        productsManagementBox.add(newItemButton);
 
         JButton updateItemButton = new JButton("Update Product Quantity");
         updateItemButton.addActionListener(
                 e -> {
 
                 });
-        productsManagmentBox.add(updateItemButton);
+        productsManagementBox.add(updateItemButton);
 
         JButton addDiscountButton = new JButton("Apply Discount to Product");
         addDiscountButton.addActionListener(
                 e -> {
 
                 });
-        productsManagmentBox.add(addDiscountButton);
+        productsManagementBox.add(addDiscountButton);
 
         // Reports section
         bodyBox.add(Box.createVerticalStrut(20));
@@ -163,6 +163,7 @@ class CreateAdminAccountDialog extends JDialog {
 
     CreateAdminAccountDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Create New Admin");
         this.setMinimumSize(new java.awt.Dimension(300, 400));
         this.setLayout(new GridLayout(10, 2));
 
@@ -231,8 +232,9 @@ class CreateSalesManAccountDialog extends JDialog {
 
     CreateSalesManAccountDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Create new SalesMan");
         this.setMinimumSize(new java.awt.Dimension(300, 400));
-        this.setLayout(new GridLayout(10, 2));
+        this.setLayout(new GridLayout(7, 2));
 
         this.userNameField = new JTextField();
         this.add(new JLabel("Username"));
@@ -291,6 +293,7 @@ class CreateProductDialog extends JDialog {
 
     CreateProductDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Add New Product");
         this.setMinimumSize(new java.awt.Dimension(300, 400));
         this.setLayout(new GridLayout(11, 2));
 
@@ -308,7 +311,7 @@ class CreateProductDialog extends JDialog {
         this.add(this.basePrice);
 
         this.avilableCount = new JTextField();
-        this.add(new JLabel("Avialable Count"));
+        this.add(new JLabel("Available Count"));
         this.add(this.avilableCount);
 
         this.year = new JTextField();

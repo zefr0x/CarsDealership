@@ -45,7 +45,7 @@ class SalesManPage extends JPanel {
         // Costumer accounts section
         bodyBox.add(Box.createVerticalStrut(20));
         Box costumersManagementBox = Box.createHorizontalBox();
-        costumersManagementBox.setBorder(BorderFactory.createTitledBorder("Customer Account Managment"));
+        costumersManagementBox.setBorder(BorderFactory.createTitledBorder("Customer Account Management"));
         costumersManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         bodyBox.add(costumersManagementBox);
 
@@ -59,22 +59,22 @@ class SalesManPage extends JPanel {
 
         // Sales managment section
         bodyBox.add(Box.createVerticalStrut(20));
-        Box salesManagmentBox = Box.createHorizontalBox();
-        salesManagmentBox.setBorder(BorderFactory.createTitledBorder("Sales Managment"));
-        salesManagmentBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bodyBox.add(salesManagmentBox);
+        Box salesManagementBox = Box.createHorizontalBox();
+        salesManagementBox.setBorder(BorderFactory.createTitledBorder("Sales Management"));
+        salesManagementBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bodyBox.add(salesManagementBox);
 
         JButton createNewSell = new JButton("Sell Product to Costumer");
         createNewSell.addActionListener(
                 e -> {
                 });
-        salesManagmentBox.add(createNewSell);
+        salesManagementBox.add(createNewSell);
 
         JButton revertSell = new JButton("Revert a Purchas");
         revertSell.addActionListener(
                 e -> {
                 });
-        salesManagmentBox.add(revertSell);
+        salesManagementBox.add(revertSell);
 
         // Database search and browser section
         bodyBox.add(Box.createVerticalStrut(20));
@@ -132,15 +132,14 @@ class CreateCostumerAccountDialog extends JDialog {
     JPasswordField userPasswordField;
     JTextField firstName;
     JTextField lastName;
-    JTextField salary;
-    JTextField nationality;
     JTextField phoneNumber;
     JTextField emailAddress;
 
     CreateCostumerAccountDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Create New Costumer");
         this.setMinimumSize(new java.awt.Dimension(300, 400));
-        this.setLayout(new GridLayout(10, 2));
+        this.setLayout(new GridLayout(7, 2));
 
         this.userNameField = new JTextField();
         this.add(new JLabel("Username"));
@@ -157,14 +156,6 @@ class CreateCostumerAccountDialog extends JDialog {
         this.lastName = new JTextField();
         this.add(new JLabel("Last Name"));
         this.add(this.lastName);
-
-        this.salary = new JTextField();
-        this.add(new JLabel("Salary"));
-        this.add(this.salary);
-
-        this.nationality = new JTextField();
-        this.add(new JLabel("Nationality"));
-        this.add(this.nationality);
 
         this.phoneNumber = new JTextField();
         this.add(new JLabel("Phone Number"));
