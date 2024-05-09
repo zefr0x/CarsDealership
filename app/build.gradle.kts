@@ -26,6 +26,10 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("com.formdev:flatlaf:3.4")
     implementation("com.formdev:flatlaf-intellij-themes:3.4")
+    implementation ("org.xerial:sqlite-jdbc:3.44.0.0")
+    implementation ("org.apache.logging.log4j:log4j-api:2.23.1")
+    implementation ("org.apache.logging.log4j:log4j-core:2.23.1")
+    implementation ("org.slf4j:slf4j-log4j12:2.0.13")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
