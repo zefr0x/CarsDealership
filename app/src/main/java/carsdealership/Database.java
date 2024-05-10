@@ -572,4 +572,60 @@ class Database implements AutoCloseable {
         return list;
 
     }
+
+    public List<Car> getCarsList() throws SQLException {
+        Statement stmt = this.connection.createStatement();
+
+        ResultSet result = stmt.executeQuery("SELECT * FROM Products WHERE vehicleType = 'car'");
+
+        List<Car> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new Car(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
+                    result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
+                    result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
+                    result.getString("fuelType"), result.getBoolean("hasSencsors"), result.getBoolean("hasCameras")));
+        }
+
+        return list;
+
+    }
+
+    public List<Carvan> getCarvansList() throws SQLException {
+        Statement stmt = this.connection.createStatement();
+
+        ResultSet result = stmt.executeQuery("SELECT * FROM Products WHERE vehicleType = 'carvan'");
+
+        List<Carvan> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new Carvan(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
+                    result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
+                    result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
+                    result.getInt("numberOfRooms"), result.getBoolean("hasBathroom"),
+                    result.getString("fuelType")));
+        }
+
+        return list;
+
+    }
+
+    public List<Bus> getBussList() throws SQLException {
+        Statement stmt = this.connection.createStatement();
+
+        ResultSet result = stmt.executeQuery("SELECT * FROM Products WHERE vehicleType = 'bus'");
+
+        List<Bus> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new Bus(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
+                    result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
+                    result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
+                    result.getInt("passengerCapacity"), result.getBoolean("isDoubleDecker"),
+                    result.getString("fuelType")));
+        }
+
+        return list;
+
+    }
 }

@@ -9,9 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.swing.JPanel;
@@ -190,6 +198,115 @@ class AdminPage extends JPanel {
             dialog.setVisible(true);
         });
         productsManagementBox.add(addDiscountButton);
+
+        JButton exportProducts = new JButton("Export All Products To File");
+        exportProducts.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify distnation file to save to");
+
+            int userSelection = fileChooser.showSaveDialog(parent);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                try (FileOutputStream fos = new FileOutputStream(fileToSave);
+                        ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                    try {
+                        Database db = new Database();
+
+                        for (Car car : db.getCarsList()) {
+                            oos.writeObject(car);
+                        }
+                        for (Carvan carvan : db.getCarvansList()) {
+                            oos.writeObject(carvan);
+                        }
+                        for (Bus bus : db.getBussList()) {
+                            oos.writeObject(bus);
+                        }
+
+                        db.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        productsManagementBox.add(exportProducts);
+
+        JButton importProducts = new JButton("Import Products From File");
+        importProducts.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify file to open and read");
+
+            int userSelection = fileChooser.showOpenDialog(parent);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                int newProductsCount = 0;
+                int doublecatedProductsCount = 0;
+
+                try (FileInputStream fos = new FileInputStream(fileToSave);
+                        ObjectInputStream oos = new ObjectInputStream(fos)) {
+                    List<Product> inputList = new ArrayList<>();
+
+                    try {
+                        while (true) {
+                            inputList.add((Product) oos.readObject());
+                        }
+                    } catch (EOFException ex) {
+                        if (inputList.size() > 0) {
+                            try (Database db = new Database()) {
+                                for (Product product : inputList) {
+                                    if (db.idProductExist(product.getId())) {
+                                        doublecatedProductsCount++;
+                                    } else {
+                                        newProductsCount++;
+
+                                        if (product instanceof Car) {
+                                            db.createCar((Car) product);
+                                        } else if (product instanceof Carvan) {
+                                            db.createCarvan((Carvan) product);
+                                        } else if (product instanceof Bus) {
+                                            db.createBus((Bus) product);
+                                        }
+                                    }
+                                }
+                            } catch (SQLException exp) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null, exp.getMessage(), "SQLException",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+
+                        JOptionPane.showMessageDialog(null,
+                                "File read successfully. " + newProductsCount + " new products were added, and "
+                                        + doublecatedProductsCount + " doublecated products skiped.",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } catch (ClassNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid objec type. Terminating.",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error reading from file. Terminating.",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error reading file",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        productsManagementBox.add(importProducts);
 
         // Reports section
         bodyBox.add(Box.createVerticalStrut(20));
@@ -716,7 +833,8 @@ class SalesReportDialog extends JDialog {
                     JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -784,12 +902,14 @@ class ProductsReportDialog extends JDialog {
                 try {
                     FileWriter writer = new FileWriter(fileToSave);
                     writer.write("Products Count: " + ProductsReportDialog.this.productsCount.getText()
-                            + "\nTotal Products Pieces Count: " + ProductsReportDialog.this.totalProductsPiecesCount.getText());
+                            + "\nTotal Products Pieces Count: "
+                            + ProductsReportDialog.this.totalProductsPiecesCount.getText());
                     writer.close();
                     JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -872,15 +992,15 @@ class UsersReportDialog extends JDialog {
                     FileWriter writer = new FileWriter(fileToSave);
                     writer.write(
                             "Total Users Count: " + UsersReportDialog.this.totalUsersCount.getText()
-                            + "\nCostumers Count: " + UsersReportDialog.this.costumersCount.getText()
-                            + "\nAdmins Count: " + UsersReportDialog.this.adminsCount.getText()
-                            + "\nSalesMen Count: " + UsersReportDialog.this.salesMenCount.getText()
-                            );
+                                    + "\nCostumers Count: " + UsersReportDialog.this.costumersCount.getText()
+                                    + "\nAdmins Count: " + UsersReportDialog.this.adminsCount.getText()
+                                    + "\nSalesMen Count: " + UsersReportDialog.this.salesMenCount.getText());
                     writer.close();
                     JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         }

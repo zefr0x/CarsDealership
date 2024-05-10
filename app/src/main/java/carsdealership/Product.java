@@ -1,5 +1,7 @@
 package carsdealership;
 
+import java.io.Serializable;
+
 enum FuelType {
     Gasoline95,
     Gasoline91,
@@ -12,7 +14,7 @@ enum ProductType {
     Bus,
 }
 
-class Product {
+class Product implements Serializable {
     private String id;
     private String productName;
     private double price;
