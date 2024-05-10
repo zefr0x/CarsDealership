@@ -239,7 +239,7 @@ class CreateAdminAccountDialog extends JDialog {
     JTextField salary;
     JTextField branch;
 
-    boolean operationCanceled = false;
+    boolean operationCanceled = true;
 
     CreateAdminAccountDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
@@ -278,7 +278,6 @@ class CreateAdminAccountDialog extends JDialog {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(e -> {
             this.setVisible(false);
-            this.operationCanceled = true;
         });
         this.add(cancelButton);
     }
@@ -288,6 +287,7 @@ class CreateAdminAccountDialog extends JDialog {
         public void actionPerformed(ActionEvent event) {
             // TODO: Validate data.
             CreateAdminAccountDialog.this.setVisible(false);
+            CreateAdminAccountDialog.this.operationCanceled = false;
         }
     }
 
@@ -302,7 +302,7 @@ class CreateSalesManAccountDialog extends JDialog {
     JTextField branch;
     JTextField salary;
 
-    boolean operationCanceled = false;
+    boolean operationCanceled = true;
 
     CreateSalesManAccountDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
@@ -341,7 +341,6 @@ class CreateSalesManAccountDialog extends JDialog {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(e -> {
             this.setVisible(false);
-            this.operationCanceled = true;
         });
         this.add(cancelButton);
     }
@@ -351,6 +350,7 @@ class CreateSalesManAccountDialog extends JDialog {
         public void actionPerformed(ActionEvent event) {
             // TODO: Validate data.
             CreateSalesManAccountDialog.this.setVisible(false);
+            CreateSalesManAccountDialog.this.operationCanceled = false;
         }
     }
 }
@@ -376,7 +376,7 @@ class CreateProductDialog extends JDialog {
     JCheckBox hasBathroom;
     JTextField numberOfRooms;
 
-    boolean operationCanceled = false;
+    boolean operationCanceled = true;
 
     CreateProductDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
@@ -494,7 +494,6 @@ class CreateProductDialog extends JDialog {
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(e -> {
-            this.operationCanceled = true;
             this.setVisible(false);
         });
         this.add(cancelButton);
@@ -505,6 +504,7 @@ class CreateProductDialog extends JDialog {
         public void actionPerformed(ActionEvent event) {
             // TODO: Validate data.
             CreateProductDialog.this.setVisible(false);
+            CreateProductDialog.this.operationCanceled = false;
         }
     }
 
@@ -706,7 +706,7 @@ class ProductsReportDialog extends JDialog {
 
     ProductsReportDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
-        this.setTitle("Sales Report");
+        this.setTitle("Products Report");
         this.setMinimumSize(new java.awt.Dimension(350, 100));
         this.setLayout(new GridLayout(3, 2));
 
@@ -760,7 +760,7 @@ class UsersReportDialog extends JDialog {
 
     UsersReportDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
-        this.setTitle("Sales Report");
+        this.setTitle("Users Report");
         this.setMinimumSize(new java.awt.Dimension(340, 300));
         this.setLayout(new GridLayout(5, 2));
 

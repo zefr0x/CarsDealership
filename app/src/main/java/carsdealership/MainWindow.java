@@ -70,11 +70,17 @@ public class MainWindow extends JFrame {
                 CreateAdminAccountDialog dialog = new CreateAdminAccountDialog(this, true);
                 dialog.setVisible(true);
 
-                AdminAccount account = new AdminAccount(UUID.randomUUID().toString(), dialog.userNameField.getText(),
-                        BCrypt.hashpw(dialog.userPasswordField.getText(), BCrypt.gensalt()), dialog.firstName.getText(),
-                        dialog.lastName.getText(), dialog.branch.getText(), Integer.parseInt(dialog.salary.getText()),
-                        true);
-                db.createAdminAccount(account);
+                if (!dialog.operationCanceled) {
+
+                    AdminAccount account = new AdminAccount(UUID.randomUUID().toString(),
+                            dialog.userNameField.getText(),
+                            BCrypt.hashpw(dialog.userPasswordField.getText(), BCrypt.gensalt()),
+                            dialog.firstName.getText(),
+                            dialog.lastName.getText(), dialog.branch.getText(),
+                            Double.parseDouble(dialog.salary.getText()),
+                            true);
+                    db.createAdminAccount(account);
+                }
             }
 
             db.close();
