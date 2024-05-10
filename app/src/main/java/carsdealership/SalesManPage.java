@@ -349,8 +349,8 @@ class RevertSaleOperationDialog extends JDialog {
     RevertSaleOperationDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
         this.setTitle("Revert Sale Operation");
-        this.setMinimumSize(new java.awt.Dimension(400, 250));
-        this.setLayout(new GridLayout(4, 2));
+        this.setMinimumSize(new java.awt.Dimension(400, 100));
+        this.setLayout(new GridLayout(2, 2));
 
         this.saleId = new JTextField();
         this.add(new JLabel("Operation ID"));
