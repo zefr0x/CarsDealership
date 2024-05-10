@@ -156,12 +156,16 @@ class SalesManPage extends JPanel {
         JButton costumersList = new JButton("Customers List Dialog");
         costumersList.addActionListener(
                 e -> {
+                    CostumersListDialog dialog = new CostumersListDialog(parent, true);
+                    dialog.setVisible(true);
                 });
         searchManagementBox.add(costumersList);
 
         JButton salesList = new JButton("Sales List Dialog");
         salesList.addActionListener(
                 e -> {
+                    SaleOperationsListDialog dialog = new SaleOperationsListDialog(parent, true);
+                    dialog.setVisible(true);
                 });
         searchManagementBox.add(salesList);
 

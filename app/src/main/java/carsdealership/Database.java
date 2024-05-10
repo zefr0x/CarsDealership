@@ -2,6 +2,8 @@ package carsdealership;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -246,7 +248,7 @@ class Database implements AutoCloseable {
         stmt.setString(2, operation.getCostomerId());
         stmt.setString(3, operation.getSalesManId());
         stmt.setString(4, operation.getPaymentMethod());
-        stmt.setDouble(5, operation.getSaleTime());
+        stmt.setLong(5, operation.getSaleTime());
 
         stmt.executeUpdate();
 
@@ -536,5 +538,38 @@ class Database implements AutoCloseable {
         stmt.setString(1, id);
 
         stmt.executeUpdate();
+    }
+
+    public List<CostomerAccount> getCostumersList() throws SQLException {
+        Statement stmt = this.connection.createStatement();
+
+        ResultSet result = stmt.executeQuery("SELECT * FROM Users WHERE userType = 'costumer'");
+
+        List<CostomerAccount> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new CostomerAccount(result.getString("id"), result.getString("username"),
+                    result.getString("password"), result.getString("fName"), result.getString("lName"),
+                    result.getString("phone"), result.getString("email")));
+        }
+
+        return list;
+
+    }
+
+    public List<SaleOperation> getSaleOperationsList() throws SQLException {
+        Statement stmt = this.connection.createStatement();
+
+        ResultSet result = stmt.executeQuery("SELECT * FROM SaleOperation");
+
+        List<SaleOperation> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new SaleOperation(result.getString("id"), result.getString("costumerId"),
+                    result.getString("salesmanId"), null, result.getString("paymentMethod"), result.getLong("time")));
+        }
+
+        return list;
+
     }
 }
