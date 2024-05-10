@@ -4,12 +4,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.UUID;
 
 public class MainWindow extends JFrame {
     static final String MAIN_PANEL = "MAIN_PANEL";
@@ -20,6 +26,8 @@ public class MainWindow extends JFrame {
 
     java.awt.Container container;
     CardLayout cardLayout;
+
+    String currentUserId;
 
     MainWindow() {
         super("Cars Dealership");
@@ -49,6 +57,32 @@ public class MainWindow extends JFrame {
             this.cardLayout.show(this.container, PRODUCTS_BROWSER_PANEL);
         });
         headerPanel.add(openBrowserButton);
+
+        // Check if there was any admin account and create initial one.
+        try {
+            Database db = new Database();
+
+            if (db.adminsCount() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "There is no admin account in the system, you will be prompet to create a new one.",
+                        "No Admin Account", JOptionPane.INFORMATION_MESSAGE);
+
+                CreateAdminAccountDialog dialog = new CreateAdminAccountDialog(this, true);
+                dialog.setVisible(true);
+
+                AdminAccount account = new AdminAccount(UUID.randomUUID().toString(), dialog.userNameField.getText(),
+                        BCrypt.hashpw(dialog.userPasswordField.getText(), BCrypt.gensalt()), dialog.firstName.getText(),
+                        dialog.lastName.getText(), dialog.branch.getText(), Integer.parseInt(dialog.salary.getText()),
+                        true);
+                db.createAdminAccount(account);
+            }
+
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "SQLException",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private class LoginButtonListener implements ActionListener {
@@ -56,6 +90,8 @@ public class MainWindow extends JFrame {
         public void actionPerformed(ActionEvent event) {
             LoginDialog dialog = new LoginDialog(MainWindow.this, true);
             dialog.setVisible(true);
+
+            MainWindow.this.currentUserId = dialog.userId;
 
             if (dialog.getUserType() == UserType.Admin) {
                 MainWindow.this.add(new AdminPage(MainWindow.this), ADMIN_MAIN_PANEL);

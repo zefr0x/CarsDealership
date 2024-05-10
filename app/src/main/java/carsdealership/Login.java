@@ -6,21 +6,27 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.swing.JPasswordField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.GridLayout;
 
 enum UserType {
     Admin,
     SalesMan,
     Costumer,
+    Unknown,
 }
 
 class LoginDialog extends JDialog {
     JTextField userNameField;
     JPasswordField userPasswordField;
     UserType userType;
+    String userId;
 
     LoginDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
@@ -47,20 +53,32 @@ class LoginDialog extends JDialog {
     private class LoginButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate username and password.
+            UserType userType = null;
+            String userId = null;
+            String password = null;
 
-            // WARN: This code is just for testing, tell database logic implemented.
-            if (userNameField.getText().equals("admin")) {
-                LoginDialog.this.userType = UserType.Admin;
-                LoginDialog.this.setVisible(false);
-            } else if (userNameField.getText().equals("salesman")) {
-                LoginDialog.this.userType = UserType.SalesMan;
-                LoginDialog.this.setVisible(false);
-            } else if (userNameField.getText().equals("costumer")) {
-                LoginDialog.this.userType = UserType.Costumer;
+            try {
+                Database db = new Database();
+
+                userId = db.getUserIdByUsername(LoginDialog.this.userNameField.getText());
+                userType = db.getUserTypeById(userId);
+                password = db.getUserPasswordById(userId);
+
+                db.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.getMessage(), "SQLException",
+                        JOptionPane.ERROR_MESSAGE);
+                System.exit(1);
+            }
+
+            if (password != null && BCrypt.checkpw(LoginDialog.this.userPasswordField.getText(), password)) {
+                LoginDialog.this.userType = userType;
+                LoginDialog.this.userId = userId;
+
                 LoginDialog.this.setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(null, "Invalid login credentials", "Error: Invalid login credentials",
+                JOptionPane.showMessageDialog(null, "Error: Invalid login credentials", "Invalid login credentials",
                         JOptionPane.ERROR_MESSAGE);
             }
         }
