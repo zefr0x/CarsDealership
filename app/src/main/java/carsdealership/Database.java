@@ -643,4 +643,85 @@ class Database implements AutoCloseable {
         return list;
 
     }
+
+    public List<Car> searchCars(String name, Boolean fuelGasoline91, Boolean fuelGasoline95, Boolean fuelDiesel,
+            String manufacturer) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement(
+                        "SELECT * FROM Products WHERE vehicleType = 'car' AND name LIKE ? AND manufacturer LIKE ? AND fuelType IN (?, ?, ?)");
+
+        stmt.setString(1, "%" + name + "%");
+        stmt.setString(2, "%" + manufacturer + "%");
+        stmt.setString(3, fuelGasoline91 ? "Gasoline91" : null);
+        stmt.setString(4, fuelGasoline95 ? "Gasoline95" : null);
+        stmt.setString(5, fuelDiesel ? "Diesel" : null);
+
+        ResultSet result = stmt.executeQuery();
+
+        List<Car> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new Car(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
+                    result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
+                    result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
+                    result.getString("fuelType"), result.getBoolean("hasSencsors"), result.getBoolean("hasCameras")));
+        }
+
+        return list;
+
+    }
+
+    public List<Carvan> searchCarvans(String name, Boolean fuelGasoline91, Boolean fuelGasoline95, Boolean fuelDiesel,
+            String manufacturer) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement(
+                        "SELECT * FROM Products WHERE vehicleType = 'carvan' AND name LIKE ? AND manufacturer LIKE ? AND fuelType IN (?, ?, ?)");
+
+        stmt.setString(1, "%" + name + "%");
+        stmt.setString(2, "%" + manufacturer + "%");
+        stmt.setString(3, fuelGasoline91 ? "Gasoline91" : null);
+        stmt.setString(4, fuelGasoline95 ? "Gasoline95" : null);
+        stmt.setString(5, fuelDiesel ? "Diesel" : null);
+
+        ResultSet result = stmt.executeQuery();
+
+        List<Carvan> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new Carvan(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
+                    result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
+                    result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
+                    result.getInt("numberOfRooms"), result.getBoolean("hasBathroom"), result.getString("fuelType")));
+        }
+
+        return list;
+
+    }
+
+    public List<Bus> searchBuses(String name, Boolean fuelGasoline91, Boolean fuelGasoline95, Boolean fuelDiesel,
+            String manufacturer) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement(
+                        "SELECT * FROM Products WHERE vehicleType = 'bus' AND name LIKE ? AND manufacturer LIKE ? AND fuelType IN (?, ?, ?)");
+
+        stmt.setString(1, "%" + name + "%");
+        stmt.setString(2, "%" + manufacturer + "%");
+        stmt.setString(3, fuelGasoline91 ? "Gasoline91" : null);
+        stmt.setString(4, fuelGasoline95 ? "Gasoline95" : null);
+        stmt.setString(5, fuelDiesel ? "Diesel" : null);
+
+        ResultSet result = stmt.executeQuery();
+
+        List<Bus> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new Bus(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
+                    result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
+                    result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
+                    result.getInt("passengerCapacity"), result.getBoolean("isDoubleDecker"), result.getString("fuelType")));
+        }
+
+        return list;
+
+    }
 }
