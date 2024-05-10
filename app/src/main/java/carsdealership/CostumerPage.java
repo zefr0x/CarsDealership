@@ -2,6 +2,8 @@ package carsdealership;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -37,15 +39,11 @@ class CostumerPage extends JPanel {
         pageTitle.setFont(new Font("Serf", Font.BOLD, 20));
         headerPanel.add(pageTitle);
 
-        //
-        JButton Select = new JButton("Select and Add Product to Cart");
-        JButton Pay = new JButton("Pay Selected Products");
-        JButton ShowPreviousPurchases = new JButton("Previous Purchases");
+        JButton ShowPreviousPurchases = new JButton("Show Previous Purchases");
 
         PreviousPurchasesButtonListener SPPListener = new PreviousPurchasesButtonListener();
         ShowPreviousPurchases.addActionListener(SPPListener);
 
-        bodyBox.add(Select);
         bodyBox.add(ShowPreviousPurchases);
 
         // Statstics section
@@ -55,21 +53,37 @@ class CostumerPage extends JPanel {
         myStatisticsBox.setBorder(BorderFactory.createTitledBorder("My Statstics"));
         bodyBox.add(myStatisticsBox);
 
-        myStatisticsBox.add(new JLabel("Count of Purchases: 0"));
+        try {
+            Database db = new Database();
 
-        // Puchase cart section
-        bodyBox.add(Box.createVerticalStrut(20));
-        Box cart = Box.createHorizontalBox();
-        cart.setAlignmentX(Component.LEFT_ALIGNMENT);
-        cart.setBorder(BorderFactory.createTitledBorder("My Cart"));
-        bodyBox.add(cart);
+            myStatisticsBox
+                    .add(new JLabel("Count of Purchases: " + db.getPurchasesCountByCostumerId(parent.currentUserId)));
 
-        cart.add(new JLabel("You have no products currently in your cart!"));
-
-        bodyBox.add(Pay);
+            db.close();
+            parent.container.remove(this);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
+                    JOptionPane.ERROR_MESSAGE);
+        }
 
         // Footer section
         JButton DeleteAccountButton = new JButton("Delete My Account");
+        DeleteAccountButton.addActionListener(
+                e -> {
+                    try {
+                        Database db = new Database();
+
+                        db.deleteUserAccount(parent.currentUserId);
+
+                        db.close();
+                        parent.container.remove(this);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                });
         footerPanel.add(DeleteAccountButton);
 
         JButton ChangePassword = new JButton("Change My Password");

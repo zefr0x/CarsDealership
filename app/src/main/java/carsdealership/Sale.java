@@ -1,70 +1,51 @@
 package carsdealership;
 
-import java.util.Date;
-import java.util.UUID;
-
 enum PaymentMethod {
     Cache,
     Visa,
     Mada,
 }
 
-class Sale {
+class SaleOperation {
     private String id;
-    private CostomerAccount costomer;
-    private SalesManAccount salesMan;
-    private Product product;
+    private String costomerId;
+    private String salesManId;
+    private String productId;
     private long saleTime; // In Unix time stamp
-    private double totalBill;
-    private PaymentMethod paymentMethod;
+    private String paymentMethod;
 
     // Payment via sales man.
-    Sale(CostomerAccount costomer, SalesManAccount salesMan, Product product, double totalBill,
-            PaymentMethod paymentMethod) {
-        this.costomer = costomer;
-        this.salesMan = salesMan;
-        this.product = product;
+    SaleOperation(String id, String costomerId, String salesManId, String productId, String paymentMethod, long time) {
+        this.id = id;
+        this.costomerId = costomerId;
+        this.salesManId = salesManId;
+        this.productId = productId;
 
-        this.totalBill = totalBill;
         this.paymentMethod = paymentMethod;
-        this.saleTime = System.currentTimeMillis();
-        this.id = UUID.randomUUID().toString();
-    }
-
-    // Self payment without any sales man.
-    Sale(CostomerAccount costomer, Product product, double totalBill, PaymentMethod paymentMethod) {
-        this(costomer, null, product, totalBill, paymentMethod);
+        this.saleTime = time;
     }
 
     public String getId() {
         return this.id;
     }
 
-    public CostomerAccount getCostomer() {
-        return this.costomer;
+    public String getCostomerId() {
+        return this.costomerId;
     }
 
-    public SalesManAccount getSalesMan() {
-        return this.salesMan;
+    public String getSalesManId() {
+        return this.salesManId;
     }
 
-    public Product getProduct() {
-        return this.product;
-    }
-
-    public double getTotalBill() {
-        return this.totalBill;
+    public String getProductId() {
+        return this.productId;
     }
 
     public long getSaleTime() {
         return this.saleTime;
     }
 
-    public PaymentMethod getPaymentMethod() {
+    public String getPaymentMethod() {
         return this.paymentMethod;
-    }
-
-    public String getSaleDateString() {
-        return new Date(this.saleTime).toString();
     }
 }

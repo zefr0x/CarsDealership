@@ -235,6 +235,68 @@ class Database implements AutoCloseable {
         stmt.executeUpdate();
     }
 
+    public void createSaleOperation(SaleOperation operation) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement(
+                """
+                        INSERT INTO SaleOperation (id, costumerId, salesmanId, paymentMethod, time)
+                        VALUES (?, ?, ?, ?, ?);
+                            """);
+
+        stmt.setString(1, operation.getId());
+        stmt.setString(2, operation.getCostomerId());
+        stmt.setString(3, operation.getSalesManId());
+        stmt.setString(4, operation.getPaymentMethod());
+        stmt.setDouble(5, operation.getSaleTime());
+
+        stmt.executeUpdate();
+
+        this.decreaseProductAvilableCount(operation.getProductId());
+        this.linkProductWithSaleOperation(operation.getProductId(), operation.getId());
+    }
+
+    public void deleteSaleOperation(String id) throws SQLException {
+        this.increaseProductAvilableCount(id);
+
+        PreparedStatement stmt = this.connection.prepareStatement(
+                """
+                        DELETE FROM SaleOperation WHERE id = ?;
+                                """);
+
+        stmt.setString(1, id);
+
+        stmt.executeUpdate();
+
+    }
+
+    public void decreaseProductAvilableCount(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("UPDATE Products SET availableCount = availableCount - 1 WHERE id = ?");
+
+        stmt.setString(1, id);
+
+        stmt.executeUpdate();
+    }
+
+    public void increaseProductAvilableCount(String operationId) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement(
+                        "UPDATE Products SET availableCount = availableCount + 1 WHERE id IN (SELECT productId FROM ProductLinkedWithSaleOperations WHERE POId = ?)");
+
+        stmt.setString(1, operationId);
+
+        stmt.executeUpdate();
+    }
+
+    public void linkProductWithSaleOperation(String productId, String saleOperationId) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("INSERT INTO ProductLinkedWithSaleOperations (POId, productId) VALUES (?, ?)");
+
+        stmt.setString(1, saleOperationId);
+        stmt.setString(2, productId);
+
+        stmt.executeUpdate();
+    }
+
     public UserType getUserTypeById(String id) throws SQLException {
         PreparedStatement stmt = this.connection
                 .prepareStatement("SELECT userType, employeeType FROM Users WHERE id = ?");
@@ -443,5 +505,36 @@ class Database implements AutoCloseable {
         int count = result.getInt("Count");
 
         return count;
+    }
+
+    public Integer getSalesCountBySalesManId(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT COUNT(*) AS Count FROM SaleOperation WHERE salesmanId = ?");
+
+        stmt.setString(1, id);
+
+        int count = stmt.executeQuery().getInt("Count");
+
+        return count;
+    }
+
+    public Integer getPurchasesCountByCostumerId(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT COUNT(*) AS Count FROM SaleOperation WHERE costumerId = ?");
+
+        stmt.setString(1, id);
+
+        int count = stmt.executeQuery().getInt("Count");
+
+        return count;
+    }
+
+    public void deleteUserAccount(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("DELETE FROM Users WHERE id = ?");
+
+        stmt.setString(1, id);
+
+        stmt.executeUpdate();
     }
 }
