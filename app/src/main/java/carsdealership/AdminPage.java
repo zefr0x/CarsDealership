@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -23,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -648,16 +651,18 @@ class ProductDiscountDialog extends JDialog {
 class SalesReportDialog extends JDialog {
     JTextField salesCount;
     JTextField topPaymentMethod;
+    JFrame parent;
 
     SalesReportDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.parent = parent;
         this.setTitle("Sales Report");
         this.setMinimumSize(new java.awt.Dimension(350, 100));
         this.setLayout(new GridLayout(3, 2));
 
         this.salesCount = new JTextField();
         this.salesCount.setEditable(false);
-        this.add(new JLabel("Sale Operations Count"));
+        this.add(new JLabel("Total Sale Operations Count"));
         this.add(this.salesCount);
 
         this.topPaymentMethod = new JTextField();
@@ -695,7 +700,25 @@ class SalesReportDialog extends JDialog {
     private class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Implement save to file.
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify distnation file to save to");
+
+            int userSelection = fileChooser.showSaveDialog(SalesReportDialog.this.parent);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                try {
+                    FileWriter writer = new FileWriter(fileToSave);
+                    writer.write("Total Sales Operations Count: " + SalesReportDialog.this.salesCount.getText()
+                            + "\nTop Payment Method Used: " + SalesReportDialog.this.topPaymentMethod.getText());
+                    writer.close();
+                    JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 }
@@ -704,8 +727,11 @@ class ProductsReportDialog extends JDialog {
     JTextField productsCount;
     JTextField totalProductsPiecesCount;
 
+    JFrame parent;
+
     ProductsReportDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.parent = parent;
         this.setTitle("Products Report");
         this.setMinimumSize(new java.awt.Dimension(350, 100));
         this.setLayout(new GridLayout(3, 2));
@@ -747,7 +773,25 @@ class ProductsReportDialog extends JDialog {
     private class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Implement save to file.
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify distnation file to save to");
+
+            int userSelection = fileChooser.showSaveDialog(ProductsReportDialog.this.parent);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                try {
+                    FileWriter writer = new FileWriter(fileToSave);
+                    writer.write("Products Count: " + ProductsReportDialog.this.productsCount.getText()
+                            + "\nTotal Products Pieces Count: " + ProductsReportDialog.this.totalProductsPiecesCount.getText());
+                    writer.close();
+                    JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 }
@@ -758,8 +802,11 @@ class UsersReportDialog extends JDialog {
     JTextField adminsCount;
     JTextField salesMenCount;
 
+    JFrame parent;
+
     UsersReportDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.parent = parent;
         this.setTitle("Users Report");
         this.setMinimumSize(new java.awt.Dimension(340, 300));
         this.setLayout(new GridLayout(5, 2));
@@ -813,7 +860,29 @@ class UsersReportDialog extends JDialog {
     private class SaveButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Implement save to file.
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify distnation file to save to");
+
+            int userSelection = fileChooser.showSaveDialog(UsersReportDialog.this.parent);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+
+                try {
+                    FileWriter writer = new FileWriter(fileToSave);
+                    writer.write(
+                            "Total Users Count: " + UsersReportDialog.this.totalUsersCount.getText()
+                            + "\nCostumers Count: " + UsersReportDialog.this.costumersCount.getText()
+                            + "\nAdmins Count: " + UsersReportDialog.this.adminsCount.getText()
+                            + "\nSalesMen Count: " + UsersReportDialog.this.salesMenCount.getText()
+                            );
+                    writer.close();
+                    JOptionPane.showMessageDialog(null, "File saved successfully.", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error saving file", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 }
