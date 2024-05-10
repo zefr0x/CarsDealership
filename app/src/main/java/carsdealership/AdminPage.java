@@ -113,7 +113,7 @@ class AdminPage extends JPanel {
                             dialog.firstName.getText(),
                             dialog.lastName.getText(), dialog.branch.getText(),
                             Double.parseDouble(dialog.salary.getText()));
-                    db.createSalesManAccount(account);
+                    db.createSalesManAccount(account, parent.currentUserId);
 
                     db.close();
                 } catch (SQLException ex) {

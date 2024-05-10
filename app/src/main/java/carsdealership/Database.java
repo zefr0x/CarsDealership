@@ -131,7 +131,7 @@ class Database implements AutoCloseable {
         stmt.executeUpdate();
     }
 
-    public void createSalesManAccount(SalesManAccount account) throws SQLException {
+    public void createSalesManAccount(SalesManAccount account, String managerId) throws SQLException {
         PreparedStatement stmt = this.connection.prepareStatement(
                 """
                         INSERT INTO Users (id, username, password, fName, lName, userType, salary, branch, employeeType)
@@ -145,6 +145,21 @@ class Database implements AutoCloseable {
         stmt.setString(5, account.getLastName());
         stmt.setDouble(6, account.getSalary());
         stmt.setString(7, account.getBranch());
+
+        stmt.executeUpdate();
+
+        this.setManagerForSalesMan(managerId, account.getId());
+    }
+
+    public void setManagerForSalesMan(String managerId, String salesmanId) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement(
+                """
+                        INSERT INTO AdminManagesSalesMan (adminId, salesManId)
+                        VALUES (?, ?);
+                            """);
+
+        stmt.setString(1, managerId);
+        stmt.setString(2, salesmanId);
 
         stmt.executeUpdate();
     }
