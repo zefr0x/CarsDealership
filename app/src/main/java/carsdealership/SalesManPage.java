@@ -111,6 +111,8 @@ class SalesManPage extends JPanel {
         JButton passwordChanger = new JButton("Change Password");
         passwordChanger.addActionListener(
                 e -> {
+                    ChangePasswordDialog dialog = new ChangePasswordDialog(parent, true);
+                    dialog.setVisible(true);
                 });
         footerPanel.add(passwordChanger);
 

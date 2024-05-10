@@ -73,6 +73,10 @@ class CostumerPage extends JPanel {
         footerPanel.add(DeleteAccountButton);
 
         JButton ChangePassword = new JButton("Change My Password");
+        ChangePassword.addActionListener(e -> {
+            ChangePasswordDialog dialog = new ChangePasswordDialog(parent, true);
+            dialog.setVisible(true);
+        });
         footerPanel.add(ChangePassword);
 
         JButton logoutButton = new JButton("Logout");
