@@ -27,7 +27,7 @@ class Database implements AutoCloseable {
                         password VARCHAR(31) NOT NULL,
                         fName VARCHAR(25) NOT NULL,
                         lName VARCHAR(25) NOT NULL,
-                        userType VARCHAR(9) CHECK(userType IN ('employee', 'customer')) NOT NULL,
+                        userType VARCHAR(9) CHECK(userType IN ('employee', 'costumer')) NOT NULL,
                         salary DECIMAL,
                         employeeType VARCHAR(8) CHECK(employeeType IN ('admin', 'salesman')),
                         isOwner BOOLEAN,
@@ -57,8 +57,8 @@ class Database implements AutoCloseable {
                     CREATE TABLE IF NOT EXISTS SaleOperation (
                         id VARCHAR(36) UNIQUE NOT NULL,
                         costumerId VARCHAR(36) NOT NULL,
-                        salesmanId VARCHAR(36) NOT NULL,
-                        paymentMethod VARCHAR(5) CHECK(paymentMethod IN ('visa', 'mada', 'cache')) NOT NULL,
+                        salesmanId VARCHAR(36),
+                        paymentMethod VARCHAR(5) CHECK(paymentMethod IN ('Visa', 'Mada', 'Cache')) NOT NULL,
                         time DATETIME NOT NULL,
                         PRIMARY KEY (id),
                         FOREIGN KEY (costumerId) REFERENCES Users(id) ON DELETE CASCADE
@@ -92,7 +92,7 @@ class Database implements AutoCloseable {
                     CREATE TABLE IF NOT EXISTS ProductLinkedWithSaleOperations (
                         POId VARCHAR(36) NOT NULL,
                         productId VARCHAR(36) NOT NULL,
-                        FOREIGN KEY (POId) REFERENCES PaymentOperations(id) ON DELETE CASCADE,
+                        FOREIGN KEY (POId) REFERENCES SaleOperation(id) ON DELETE CASCADE,
                         FOREIGN KEY (productId) REFERENCES Products(id)
                     );
                 """);
@@ -150,7 +150,7 @@ class Database implements AutoCloseable {
     public void createCostumerAccount(CostomerAccount account) throws SQLException {
         PreparedStatement stmt = this.connection.prepareStatement(
                 """
-                        INSERT INTO Users (id, username, password, fName, lName, userType, phoneNumber, mailAddress, loyalityPoints)
+                        INSERT INTO Users (id, username, password, fName, lName, userType, phone, email, loyalityPoints)
                         VALUES (?, ?, ?, ?, ?, 'costumer', ?, ?, ?);
                             """);
 
