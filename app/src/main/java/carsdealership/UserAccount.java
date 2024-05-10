@@ -5,7 +5,7 @@ import org.mindrot.jbcrypt.BCrypt;
 class UserAccount {
     private String id;
     private String userName;
-    private String passwordHash;
+    private String password;
     private String firstName;
     private String lastName;
 
@@ -22,7 +22,7 @@ class UserAccount {
     }
 
     public void setPassword(String password) {
-        this.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = password;
     }
 
     public String getId() {
@@ -45,24 +45,23 @@ class UserAccount {
         return this.firstName + " " + this.lastName;
     }
 
-    public boolean validatePassword(String password) {
-        return BCrypt.checkpw(password, this.passwordHash);
+    public String getPassword() {
+        return this.password;
     }
 }
 
 class AdminAccount extends UserAccount {
     private String branch;
     private double salary;
-    private int officeNumber;
+    private boolean isOwner;
 
-    AdminAccount(String id, String userName, String password, String firstName, String lastName, String branch, double salary,
-            int officeNumber) {
+    AdminAccount(String id, String userName, String password, String firstName, String lastName, String branch,
+            double salary, boolean isOwner) {
         super(id, userName, password, firstName, lastName);
 
         setBranch(branch);
         setSalary(salary);
-        setOfficeNumber(officeNumber);
-
+        this.isOwner = isOwner;
     }
 
     public void setBranch(String branch) {
@@ -73,10 +72,6 @@ class AdminAccount extends UserAccount {
         this.salary = salary;
     }
 
-    public void setOfficeNumber(int officeNumber) {
-        this.officeNumber = officeNumber;
-    }
-
     public String getBranch() {
         return this.branch;
     }
@@ -85,8 +80,8 @@ class AdminAccount extends UserAccount {
         return this.salary;
     }
 
-    public int getOfficeNumber() {
-        return this.officeNumber;
+    public boolean getIsOwner() {
+        return this.isOwner;
     }
 }
 
@@ -94,7 +89,8 @@ class SalesManAccount extends UserAccount {
     private String branch;
     private double salary;
 
-    SalesManAccount(String id, String userName, String password, String firstName, String lastName, String branch, double salary) {
+    SalesManAccount(String id, String userName, String password, String firstName, String lastName, String branch,
+            double salary) {
         super(id, userName, password, firstName, lastName);
 
         this.branch = branch;

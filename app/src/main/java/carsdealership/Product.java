@@ -1,12 +1,9 @@
 package carsdealership;
 
-import java.util.UUID;
-
 enum FuelType {
-    Gasoline,
+    Gasoline95,
+    Gasoline91,
     Diesel,
-    CompressedNatural,
-    Ethanol,
 }
 
 enum ProductType {
@@ -21,12 +18,12 @@ class Product {
     private double price;
     private int availableCount; // number of available products
 
-    Product(String productName, double productPrice, int productAvailableCount) {
+    Product(String id, String productName, double productPrice, int productAvailableCount) {
         setProductName(productName);
         setPrice(productPrice);
         setAvailableCount(productAvailableCount);
 
-        this.id = UUID.randomUUID().toString();
+        this.id = id;
     }
 
     private void setProductName(String productName) {
@@ -34,11 +31,11 @@ class Product {
     }
 
     public void setPrice(double price) {
-            this.price = price;
+        this.price = price;
     }
 
     public void setAvailableCount(int availableCount) {
-            this.availableCount = availableCount;
+        this.availableCount = availableCount;
     }
 
     public void incrementAvailableCount() {
@@ -46,7 +43,7 @@ class Product {
     }
 
     public void decrementAvailableCount() {
-            this.availableCount--;
+        this.availableCount--;
     }
 
     public String getId() {
@@ -72,11 +69,11 @@ class Vehicle extends Product {
     private String vehicleIdentificationNumber;
     private String color;
     private String manufacturer;
-    private FuelType fuelType;
+    private String fuelType;
 
-    Vehicle(String vehicleName, double price, int availableCount, int year, String model, String vehicleId,
-            String color, String manufacturer, FuelType fuelType) {
-        super(vehicleName, price, availableCount);
+    Vehicle(String id, String vehicleName, double price, int availableCount, int year, String model, String vehicleId,
+            String color, String manufacturer, String fuelType) {
+        super(id, vehicleName, price, availableCount);
 
         this.year = year;
         this.model = model;
@@ -106,7 +103,7 @@ class Vehicle extends Product {
         return this.manufacturer;
     }
 
-    public FuelType getFuelType() {
+    public String getFuelType() {
         return this.fuelType;
     }
 }
@@ -114,18 +111,13 @@ class Vehicle extends Product {
 class Car extends Vehicle {
     private boolean hasSencsors;
     private boolean hasCameras;
-    private boolean hasBlindSpotRadar;
-    private String shifterType;
 
-    Car(String carName, double price, int availableCount, int year, String model, String vehicleId,
-            String color, String manufacturer, FuelType fuelType, boolean hasSencsors, boolean hasCameras,
-            boolean hasBlindSpotRadar, String shifterType) {
-        super(carName, price, availableCount, year, model, vehicleId, color, manufacturer, fuelType);
+    Car(String id, String carName, double price, int availableCount, int year, String model, String vehicleId,
+            String color, String manufacturer, String fuelType, boolean hasSencsors, boolean hasCameras) {
+        super(id, carName, price, availableCount, year, model, vehicleId, color, manufacturer, fuelType);
 
         this.hasSencsors = hasSencsors;
         this.hasCameras = hasCameras;
-        this.hasBlindSpotRadar = hasBlindSpotRadar;
-        this.shifterType = shifterType;
     }
 
     public boolean getHasSencsors() {
@@ -135,65 +127,39 @@ class Car extends Vehicle {
     public boolean getHasCameras() {
         return this.hasCameras;
     }
-
-    public boolean getHasBlindSportRadar() {
-        return this.hasBlindSpotRadar;
-    }
-
-    public String getShifterType() {
-        return this.shifterType;
-    }
 }
 
 class Carvan extends Vehicle {
     private int numberOfRooms;
-    private boolean hasKitchen;
     private boolean hasBathroom;
-    private double waterCapacity; // In Litres
 
-    Carvan(String carvanName, double price, int availableCount, int year, String model, String vehicleId,
-            String color, String manufacturer, int numberOfRooms, boolean hasKitchen, boolean hasBathroom,
-            double waterCapacity, FuelType fuelType) {
-        super(carvanName, price, availableCount, year, model, vehicleId, color, manufacturer, fuelType);
+    Carvan(String id, String carvanName, double price, int availableCount, int year, String model, String vehicleId,
+            String color, String manufacturer, int numberOfRooms, boolean hasBathroom, String fuelType) {
+        super(id, carvanName, price, availableCount, year, model, vehicleId, color, manufacturer, fuelType);
 
         this.numberOfRooms = numberOfRooms;
-        this.hasKitchen = hasKitchen;
         this.hasBathroom = hasBathroom;
-        this.waterCapacity = waterCapacity;
     }
 
     public int getNumberOfRooms() {
         return this.numberOfRooms;
     }
 
-    public boolean getHasKitchen() {
-        return this.hasKitchen;
-    }
-
     public boolean getHasBathroom() {
         return this.hasBathroom;
-    }
-
-    public double getWaterCapacity() {
-        return this.waterCapacity;
     }
 }
 
 class Bus extends Vehicle {
     private int passengerCapacity;
     private boolean isDoubleDecker;
-    private boolean hasWifi;
-    private boolean hasBathroom;
 
-    Bus(String busName, double price, int availableCount, int year, String model, String vehicleId,
-            String color, String manufacturer, int passengerCapacity, boolean isDoubleDecker, boolean hasWifi,
-            boolean hasBathroom, FuelType fuelType) {
-        super(busName, price, availableCount, year, model, vehicleId, color, manufacturer, fuelType);
+    Bus(String id, String busName, double price, int availableCount, int year, String model, String vehicleId,
+            String color, String manufacturer, int passengerCapacity, boolean isDoubleDecker, String fuelType) {
+        super(id, busName, price, availableCount, year, model, vehicleId, color, manufacturer, fuelType);
 
         this.passengerCapacity = passengerCapacity;
         this.isDoubleDecker = isDoubleDecker;
-        this.hasWifi = hasWifi;
-        this.hasBathroom = hasBathroom;
     }
 
     public int getPassengerCapacity() {
@@ -202,13 +168,5 @@ class Bus extends Vehicle {
 
     public boolean getIsDoubleDecker() {
         return this.isDoubleDecker;
-    }
-
-    public boolean getHasWifi() {
-        return this.hasWifi;
-    }
-
-    public boolean getHasBathroom() {
-        return this.hasBathroom;
     }
 }
