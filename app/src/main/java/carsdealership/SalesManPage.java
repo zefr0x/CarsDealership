@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -284,8 +285,23 @@ class CreateCostumerAccountDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate data.
-            CreateCostumerAccountDialog.this.setVisible(false);
+            final String phoneRegex = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
+            final String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+            Pattern phonePat = Pattern.compile(phoneRegex);
+            Pattern emailPat = Pattern.compile(emailRegex);
+
+            if (phonePat.matcher(CreateCostumerAccountDialog.this.phoneNumber.getText()).matches()) {
+                if (emailPat.matcher(CreateCostumerAccountDialog.this.emailAddress.getText()).matches()) {
+                    CreateCostumerAccountDialog.this.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Email Address is invalid.", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Phone Number is invalid.", "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }
 
@@ -332,9 +348,24 @@ class CreateSaleOperationDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate data.
-            CreateSaleOperationDialog.this.setVisible(false);
-            CreateSaleOperationDialog.this.operationCanceled = false;
+            try (Database db = new Database()) {
+                if (db.isCostumerExist(CreateSaleOperationDialog.this.costumerId.getText())) {
+                    if (db.isProductExist(CreateSaleOperationDialog.this.productId.getText())) {
+                        CreateSaleOperationDialog.this.setVisible(false);
+                        CreateSaleOperationDialog.this.operationCanceled = false;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Product ID doesn't exist in the system.", "Invalid Input",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Costumer ID doesn't exist in the system.", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -370,9 +401,19 @@ class RevertSaleOperationDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate data.
-            RevertSaleOperationDialog.this.setVisible(false);
-            RevertSaleOperationDialog.this.operationCanceled = false;
+            try (Database db = new Database()) {
+                if (db.isSaleOperationExist(RevertSaleOperationDialog.this.saleId.getText())) {
+                    RevertSaleOperationDialog.this.setVisible(false);
+                    RevertSaleOperationDialog.this.operationCanceled = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Sale Operation ID doesn't exist in the system.", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

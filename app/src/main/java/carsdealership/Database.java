@@ -361,15 +361,40 @@ class Database implements AutoCloseable {
         return result.getString("password");
     }
 
-    public boolean idProductExist(String id) throws SQLException {
+    public boolean isProductExist(String id) throws SQLException {
         PreparedStatement stmt = this.connection
-                .prepareStatement("SELECT COUNT(*) FROM Products WHERE id = ?");
+                .prepareStatement("SELECT EXISTS (SELECT 1 FROM Products WHERE id = ?)");
 
         stmt.setString(1, id);
 
-        int count = stmt.executeQuery().getInt(1);
+        return stmt.executeQuery().getBoolean(1);
+    }
 
-        return count <= 0 ? false : true;
+    public boolean isUserExist(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT EXISTS (SELECT 1 FROM Users WHERE id = ?)");
+
+        stmt.setString(1, id);
+
+        return stmt.executeQuery().getBoolean(1);
+    }
+
+    public boolean isCostumerExist(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT EXISTS (SELECT 1 FROM Users WHERE userType = 'costumer' AND id = ?)");
+
+        stmt.setString(1, id);
+
+        return stmt.executeQuery().getBoolean(1);
+    }
+
+    public boolean isSaleOperationExist(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT EXISTS (SELECT 1 FROM SaleOperation WHERE id = ?)");
+
+        stmt.setString(1, id);
+
+        return stmt.executeQuery().getBoolean(1);
     }
 
     public int getProductAvailableCount(String id) throws SQLException {
@@ -718,7 +743,8 @@ class Database implements AutoCloseable {
             list.add(new Bus(result.getString("id"), result.getString("name"), result.getDouble("basePrice"),
                     result.getInt("availableCount"), result.getInt("year"), result.getString("model"),
                     result.getString("vehicleId"), result.getString("color"), result.getString("manufacturer"),
-                    result.getInt("passengerCapacity"), result.getBoolean("isDoubleDecker"), result.getString("fuelType")));
+                    result.getInt("passengerCapacity"), result.getBoolean("isDoubleDecker"),
+                    result.getString("fuelType")));
         }
 
         return list;

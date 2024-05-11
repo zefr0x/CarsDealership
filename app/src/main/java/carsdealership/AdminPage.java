@@ -267,7 +267,7 @@ class AdminPage extends JPanel {
                         if (inputList.size() > 0) {
                             try (Database db = new Database()) {
                                 for (Product product : inputList) {
-                                    if (db.idProductExist(product.getId())) {
+                                    if (db.isProductExist(product.getId())) {
                                         doublecatedProductsCount++;
                                     } else {
                                         newProductsCount++;
@@ -405,9 +405,16 @@ class CreateAdminAccountDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate data.
-            CreateAdminAccountDialog.this.setVisible(false);
-            CreateAdminAccountDialog.this.operationCanceled = false;
+            try {
+                Double.parseDouble(CreateAdminAccountDialog.this.salary.getText());
+
+                CreateAdminAccountDialog.this.setVisible(false);
+                CreateAdminAccountDialog.this.operationCanceled = false;
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Salary should be a real number", "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
+
+            }
         }
     }
 
@@ -468,9 +475,16 @@ class CreateSalesManAccountDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate data.
-            CreateSalesManAccountDialog.this.setVisible(false);
-            CreateSalesManAccountDialog.this.operationCanceled = false;
+            try {
+                Double.parseDouble(CreateSalesManAccountDialog.this.salary.getText());
+
+                CreateSalesManAccountDialog.this.setVisible(false);
+                CreateSalesManAccountDialog.this.operationCanceled = false;
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Salary should be a real number", "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
+
+            }
         }
     }
 }
@@ -622,9 +636,42 @@ class CreateProductDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            // TODO: Validate data.
-            CreateProductDialog.this.setVisible(false);
-            CreateProductDialog.this.operationCanceled = false;
+            try {
+                Double.parseDouble(CreateProductDialog.this.basePrice.getText());
+                try {
+                    Integer.parseInt(CreateProductDialog.this.avilableCount.getText());
+                    try {
+                        Integer.parseInt(CreateProductDialog.this.year.getText());
+                        try {
+                            Integer.parseInt(CreateProductDialog.this.passengerCapacity.getText());
+                            try {
+                                Integer.parseInt(CreateProductDialog.this.numberOfRooms.getText());
+
+                                CreateProductDialog.this.setVisible(false);
+                                CreateProductDialog.this.operationCanceled = false;
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(null, "Number of Rooms should be an integer number.",
+                                        "Invalid Input",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "Passenger Capacity should be an integer number.",
+                                    "Invalid Input",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Year should be an integer number.", "Invalid Input",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Avilable Count should be an integer number.", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Salary should be a real number", "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
+
+            }
         }
     }
 
@@ -666,9 +713,9 @@ class UpdateProductQuentityDialog extends JDialog {
             try {
                 Database db = new Database();
 
-                int oldCount = db.getProductAvailableCount(UpdateProductQuentityDialog.this.productId.getText());
+                if (db.isProductExist(UpdateProductQuentityDialog.this.productId.getText())) {
+                    int oldCount = db.getProductAvailableCount(UpdateProductQuentityDialog.this.productId.getText());
 
-                if (db.idProductExist(UpdateProductQuentityDialog.this.productId.getText())) {
                     try {
                         db.setProductAvailableCount(UpdateProductQuentityDialog.this.productId.getText(),
                                 Integer.parseInt(UpdateProductQuentityDialog.this.newQuentity.getText()));
@@ -733,9 +780,9 @@ class ProductDiscountDialog extends JDialog {
             try {
                 Database db = new Database();
 
-                double oldPrice = db.getProductPrice(ProductDiscountDialog.this.productId.getText());
+                if (db.isProductExist(ProductDiscountDialog.this.productId.getText())) {
+                    double oldPrice = db.getProductPrice(ProductDiscountDialog.this.productId.getText());
 
-                if (db.idProductExist(ProductDiscountDialog.this.productId.getText())) {
                     try {
                         db.applyProductDiscount(ProductDiscountDialog.this.productId.getText(),
                                 Double.parseDouble(ProductDiscountDialog.this.discountPercentage.getText()));
@@ -746,7 +793,7 @@ class ProductDiscountDialog extends JDialog {
                                 "Product Count Updated",
                                 JOptionPane.INFORMATION_MESSAGE);
                     } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(null, "Error: Discount should be double number.",
+                        JOptionPane.showMessageDialog(null, "Error: Discount Percentage should be double number.",
                                 "Error Not Integer",
                                 JOptionPane.ERROR_MESSAGE);
                     }
