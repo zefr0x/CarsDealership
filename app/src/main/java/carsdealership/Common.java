@@ -11,6 +11,7 @@ import javax.swing.Box;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -182,7 +183,7 @@ class SaleOperationsListDialog extends JDialog {
 class PreviousPurchasesListDialog extends JDialog {
     PreviousPurchasesListDialog(final JFrame parent, boolean modal, String costumerId) {
         super(parent, modal);
-        this.setTitle("Sales Operations List");
+        this.setTitle("Previous Purchases List");
         this.setMinimumSize(new java.awt.Dimension(800, 250));
 
         Box mainBox = Box.createVerticalBox();
@@ -226,6 +227,36 @@ class PreviousPurchasesListDialog extends JDialog {
 
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(e -> {
+            this.setVisible(false);
+        });
+        footerBox.add(closeButton);
+    }
+}
+
+class editMainBoardDialog extends JDialog {
+    editMainBoardDialog(final MainWindow parent, boolean modal) {
+        super(parent, modal);
+        this.setTitle("Main Board Editor");
+        this.setMinimumSize(new java.awt.Dimension(800, 250));
+
+        Box mainBox = Box.createVerticalBox();
+        this.add(mainBox);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setText(parent.mainTextBoard.getText());
+
+        JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        mainBox.add(scrollPane);
+
+        // Footer layout
+        Box footerBox = Box.createHorizontalBox();
+        mainBox.add(footerBox);
+
+        JButton closeButton = new JButton("Save");
+        closeButton.addActionListener(e -> {
+            parent.mainTextBoard.setText(textArea.getText());
             this.setVisible(false);
         });
         footerBox.add(closeButton);

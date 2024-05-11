@@ -58,7 +58,7 @@ class AdminPage extends JPanel {
         this.add(footerPanel, BorderLayout.SOUTH);
 
         // Page Title
-        JLabel pageTitle = new JLabel("Admin DashBoard (" + parent.currentUsername +")");
+        JLabel pageTitle = new JLabel("Admin DashBoard (" + parent.currentUsername + ")");
         pageTitle.setFont(new Font("Serf", Font.BOLD, 20));
         headerPanel.add(pageTitle);
 
@@ -321,6 +321,13 @@ class AdminPage extends JPanel {
             dialog.setVisible(true);
         });
         reportsBox.add(usersReportButton);
+
+        JButton editMainBoard = new JButton("Edit Main Board");
+        editMainBoard.addActionListener(e -> {
+            editMainBoardDialog dialog = new editMainBoardDialog(parent, true);
+            dialog.setVisible(true);
+        });
+        footerPanel.add(editMainBoard);
 
         JButton changePasswordButton = new JButton("Change My Password");
         changePasswordButton.addActionListener(e -> {

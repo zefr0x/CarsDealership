@@ -6,11 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +28,7 @@ public class MainWindow extends JFrame {
 
     java.awt.Container container;
     CardLayout cardLayout;
+    JTextPane mainTextBoard;
 
     String currentUserId;
     String currentUsername;
@@ -47,6 +50,20 @@ public class MainWindow extends JFrame {
         mainPage.add(headerPanel, BorderLayout.NORTH);
 
         mainPage.add(new JLabel("", new ImageIcon(getClass().getResource("/logo.png")), JLabel.CENTER));
+
+        mainTextBoard = new JTextPane();
+        mainTextBoard.setContentType("text/html");
+        mainTextBoard.setPreferredSize(new Dimension(0, 200));
+        mainTextBoard.setEditable(false);
+        mainTextBoard.setText("""
+                        <html>
+                            <body>
+                                <h><b>Runtime Admin Notes:</b></h>
+                                <p>Noting is written yet! (Admins only are able to edit this text)</p>
+                            </body>
+                        </html>
+                """);
+        mainPage.add(mainTextBoard, BorderLayout.SOUTH);
 
         JButton loginButton = new JButton("Login to User Account");
         loginButton.addActionListener(new LoginButtonListener());
