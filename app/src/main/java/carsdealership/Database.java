@@ -225,7 +225,7 @@ class Database implements AutoCloseable {
         stmt.setString(9, product.getManufacturer());
         stmt.setString(10, product.getFuelType().toString());
         stmt.setBoolean(11, product.getHasBathroom());
-        stmt.setInt(11, product.getNumberOfRooms());
+        stmt.setInt(12, product.getNumberOfRooms());
 
         stmt.executeUpdate();
     }
