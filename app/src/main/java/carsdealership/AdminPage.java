@@ -76,8 +76,7 @@ class AdminPage extends JPanel {
                     dialog.setVisible(true);
 
                     if (!dialog.operationCanceled) {
-                        try {
-                            Database db = new Database();
+                        try (Database db = new Database()) {
 
                             AdminAccount account = new AdminAccount(UUID.randomUUID().toString(),
                                     dialog.userNameField.getText(),
@@ -87,8 +86,6 @@ class AdminPage extends JPanel {
                                     Double.parseDouble(dialog.salary.getText()),
                                     false);
                             db.createAdminAccount(account);
-
-                            db.close();
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -104,9 +101,7 @@ class AdminPage extends JPanel {
             dialog.setVisible(true);
 
             if (!dialog.operationCanceled) {
-                try {
-                    Database db = new Database();
-
+                try (Database db = new Database()) {
                     SalesManAccount account = new SalesManAccount(UUID.randomUUID().toString(),
                             dialog.userNameField.getText(),
                             BCrypt.hashpw(dialog.userPasswordField.getText(), BCrypt.gensalt()),
@@ -114,8 +109,6 @@ class AdminPage extends JPanel {
                             dialog.lastName.getText(), dialog.branch.getText(),
                             Double.parseDouble(dialog.salary.getText()));
                     db.createSalesManAccount(account, parent.currentUserId);
-
-                    db.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -139,9 +132,7 @@ class AdminPage extends JPanel {
             dialog.setVisible(true);
 
             if (!dialog.operationCanceled) {
-                try {
-                    Database db = new Database();
-
+                try (Database db = new Database()) {
                     if (dialog.productType.getSelectedItem().toString().equals("Car")) {
                         Car product = new Car(UUID.randomUUID().toString(), dialog.vehicleName.getText(),
                                 Double.parseDouble(dialog.basePrice.getText()),
@@ -174,8 +165,6 @@ class AdminPage extends JPanel {
 
                         db.createBus(product);
                     }
-
-                    db.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -211,9 +200,7 @@ class AdminPage extends JPanel {
 
                 try (FileOutputStream fos = new FileOutputStream(fileToSave);
                         ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-                    try {
-                        Database db = new Database();
-
+                    try (Database db = new Database()) {
                         for (Car car : db.getCarsList()) {
                             oos.writeObject(car);
                         }
@@ -223,8 +210,6 @@ class AdminPage extends JPanel {
                         for (Bus bus : db.getBussList()) {
                             oos.writeObject(bus);
                         }
-
-                        db.close();
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -710,9 +695,7 @@ class UpdateProductQuentityDialog extends JDialog {
     private class ApplyButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            try {
-                Database db = new Database();
-
+            try (Database db = new Database()) {
                 if (db.isProductExist(UpdateProductQuentityDialog.this.productId.getText())) {
                     int oldCount = db.getProductAvailableCount(UpdateProductQuentityDialog.this.productId.getText());
 
@@ -734,8 +717,6 @@ class UpdateProductQuentityDialog extends JDialog {
                     JOptionPane.showMessageDialog(null, "Error: Product ID doesn't exist.", "Error Product ID",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
-                db.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -777,9 +758,7 @@ class ProductDiscountDialog extends JDialog {
     private class ApplyButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            try {
-                Database db = new Database();
-
+            try (Database db = new Database()) {
                 if (db.isProductExist(ProductDiscountDialog.this.productId.getText())) {
                     double oldPrice = db.getProductPrice(ProductDiscountDialog.this.productId.getText());
 
@@ -801,8 +780,6 @@ class ProductDiscountDialog extends JDialog {
                     JOptionPane.showMessageDialog(null, "Error: Product ID doesn't exist.", "Error Product ID",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
-                db.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -834,16 +811,12 @@ class SalesReportDialog extends JDialog {
         this.add(new JLabel("Top Payment Method"));
         this.add(this.topPaymentMethod);
 
-        try {
-            Database db = new Database();
-
+        try (Database db = new Database()) {
             Integer salesCount = db.getSalesCount();
 
             this.salesCount.setText(salesCount.toString());
             if (salesCount > 0)
                 topPaymentMethod.setText(db.getTopPaymentMethod());
-
-            db.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -911,13 +884,9 @@ class ProductsReportDialog extends JDialog {
         this.add(new JLabel("Total Products Pieces Count"));
         this.add(this.totalProductsPiecesCount);
 
-        try {
-            Database db = new Database();
-
+        try (Database db = new Database()) {
             productsCount.setText(db.getProductsCount().toString());
             totalProductsPiecesCount.setText(db.getTotalProductsPiecesCount().toString());
-
-            db.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -998,15 +967,11 @@ class UsersReportDialog extends JDialog {
         this.add(new JLabel("SalesMen Count"));
         this.add(this.salesMenCount);
 
-        try {
-            Database db = new Database();
-
+        try (Database db = new Database()) {
             totalUsersCount.setText(db.getTotalUsersCount().toString());
             costumersCount.setText(db.getCostumersCount().toString());
             adminsCount.setText(db.getAdminsCount().toString());
             salesMenCount.setText(db.getSalesMenCount().toString());
-
-            db.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",

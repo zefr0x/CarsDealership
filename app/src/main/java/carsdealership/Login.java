@@ -57,14 +57,10 @@ class LoginDialog extends JDialog {
             String userId = null;
             String password = null;
 
-            try {
-                Database db = new Database();
-
+            try (Database db = new Database()) {
                 userId = db.getUserIdByUsername(LoginDialog.this.userNameField.getText());
                 userType = db.getUserTypeById(userId);
                 password = db.getUserPasswordById(userId);
-
-                db.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, e.getMessage(), "SQLException",

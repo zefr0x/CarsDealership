@@ -66,9 +66,7 @@ class SalesManPage extends JPanel {
                     dialog.setVisible(true);
 
                     if (!dialog.operationCanceled) {
-                        try {
-                            Database db = new Database();
-
+                        try (Database db = new Database()) {
                             CostomerAccount account = new CostomerAccount(UUID.randomUUID().toString(),
                                     dialog.userNameField.getText(),
                                     BCrypt.hashpw(dialog.userPasswordField.getText(), BCrypt.gensalt()),
@@ -76,8 +74,6 @@ class SalesManPage extends JPanel {
                                     dialog.lastName.getText(), dialog.phoneNumber.getText(),
                                     dialog.emailAddress.getText());
                             db.createCostumerAccount(account);
-
-                            db.close();
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -101,18 +97,13 @@ class SalesManPage extends JPanel {
                     dialog.setVisible(true);
 
                     if (!dialog.operationCanceled) {
-                        try {
-                            Database db = new Database();
-
+                        try (Database db = new Database()) {
                             SaleOperation operation = new SaleOperation(UUID.randomUUID().toString(),
                                     dialog.costumerId.getText(), parent.currentUserId, dialog.productId.getText(),
                                     dialog.paymentMethod.getSelectedItem().toString(), System.currentTimeMillis());
                             db.createSaleOperation(operation);
-                            ;
 
                             this.updateStatisticsBox();
-
-                            db.close();
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -129,14 +120,10 @@ class SalesManPage extends JPanel {
                     dialog.setVisible(true);
 
                     if (!dialog.operationCanceled) {
-                        try {
-                            Database db = new Database();
-
+                        try (Database db = new Database()) {
                             db.deleteSaleOperation(dialog.saleId.getText());
 
                             this.updateStatisticsBox();
-
-                            db.close();
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -194,12 +181,8 @@ class SalesManPage extends JPanel {
         JButton deleteAccount = new JButton("Delete Account");
         deleteAccount.addActionListener(
                 e -> {
-                    try {
-                        Database db = new Database();
-
+                    try (Database db = new Database()) {
                         db.deleteUserAccount(parent.currentUserId);
-
-                        db.close();
                         parent.container.remove(this);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -216,12 +199,8 @@ class SalesManPage extends JPanel {
     }
 
     void updateStatisticsBox() {
-        try {
-            Database db = new Database();
-
+        try (Database db = new Database()) {
             salesByMeStat.setText("Sales by Me: " + db.getSalesCountBySalesManId(parent.currentUserId));
-
-            db.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
@@ -406,7 +385,8 @@ class RevertSaleOperationDialog extends JDialog {
                     RevertSaleOperationDialog.this.setVisible(false);
                     RevertSaleOperationDialog.this.operationCanceled = false;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Sale Operation ID doesn't exist in the system.", "Invalid Input",
+                    JOptionPane.showMessageDialog(null, "Sale Operation ID doesn't exist in the system.",
+                            "Invalid Input",
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (SQLException ex) {

@@ -53,13 +53,9 @@ class CostumerPage extends JPanel {
         myStatisticsBox.setBorder(BorderFactory.createTitledBorder("My Statstics"));
         bodyBox.add(myStatisticsBox);
 
-        try {
-            Database db = new Database();
-
+        try (Database db = new Database()) {
             myStatisticsBox
                     .add(new JLabel("Count of Purchases: " + db.getPurchasesCountByCostumerId(parent.currentUserId)));
-
-            db.close();
             parent.container.remove(this);
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -71,12 +67,8 @@ class CostumerPage extends JPanel {
         JButton DeleteAccountButton = new JButton("Delete My Account");
         DeleteAccountButton.addActionListener(
                 e -> {
-                    try {
-                        Database db = new Database();
-
+                    try (Database db = new Database()) {
                         db.deleteUserAccount(parent.currentUserId);
-
-                        db.close();
                         parent.container.remove(this);
                     } catch (SQLException ex) {
                         ex.printStackTrace();

@@ -59,9 +59,7 @@ public class MainWindow extends JFrame {
         headerPanel.add(openBrowserButton);
 
         // Check if there was any admin account and create initial one.
-        try {
-            Database db = new Database();
-
+        try (Database db = new Database()) {
             if (db.adminsCount() == 0) {
                 JOptionPane.showMessageDialog(this,
                         "There is no admin account in the system, you will be prompet to create a new one.",
@@ -82,8 +80,6 @@ public class MainWindow extends JFrame {
                     db.createAdminAccount(account);
                 }
             }
-
-            db.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage(), "SQLException",
