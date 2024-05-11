@@ -200,7 +200,7 @@ class Database implements AutoCloseable {
         stmt.setString(7, product.getVehicleIdentificationNumber());
         stmt.setString(8, product.getColor());
         stmt.setString(9, product.getManufacturer());
-        stmt.setString(10, product.getFuelType().toString());
+        stmt.setString(10, product.getFuelType());
         stmt.setBoolean(11, product.getHasSencsors());
         stmt.setBoolean(12, product.getHasCameras());
 
@@ -517,7 +517,7 @@ class Database implements AutoCloseable {
     public Integer getCostumersCount() throws SQLException {
         Statement stmt = this.connection.createStatement();
 
-        ResultSet result = stmt.executeQuery("SELECT COUNT(*) AS Count FROM Users WHERE userType = 'customer'");
+        ResultSet result = stmt.executeQuery("SELECT COUNT(*) AS Count FROM Users WHERE userType = 'costumer'");
 
         result.next();
 
