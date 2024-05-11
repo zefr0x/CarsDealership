@@ -398,10 +398,13 @@ class CreateAdminAccountDialog extends JDialog {
         @Override
         public void actionPerformed(ActionEvent event) {
             try {
-                Double.parseDouble(CreateAdminAccountDialog.this.salary.getText());
-
-                CreateAdminAccountDialog.this.setVisible(false);
-                CreateAdminAccountDialog.this.operationCanceled = false;
+                if (Double.parseDouble(CreateAdminAccountDialog.this.salary.getText()) > 0) {
+                    CreateAdminAccountDialog.this.setVisible(false);
+                    CreateAdminAccountDialog.this.operationCanceled = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Salary should be > 0", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Salary should be a real number", "Invalid Input",
                         JOptionPane.ERROR_MESSAGE);
@@ -468,14 +471,16 @@ class CreateSalesManAccountDialog extends JDialog {
         @Override
         public void actionPerformed(ActionEvent event) {
             try {
-                Double.parseDouble(CreateSalesManAccountDialog.this.salary.getText());
-
-                CreateSalesManAccountDialog.this.setVisible(false);
-                CreateSalesManAccountDialog.this.operationCanceled = false;
+                if (Double.parseDouble(CreateSalesManAccountDialog.this.salary.getText()) > 0) {
+                    CreateSalesManAccountDialog.this.setVisible(false);
+                    CreateSalesManAccountDialog.this.operationCanceled = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Salary should be > 0", "Invalid Input",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Salary should be a real number", "Invalid Input",
                         JOptionPane.ERROR_MESSAGE);
-
             }
         }
     }
@@ -631,50 +636,78 @@ class CreateProductDialog extends JDialog {
             String productType = CreateProductDialog.this.productType.getSelectedItem().toString();
 
             try {
-                Double.parseDouble(CreateProductDialog.this.basePrice.getText());
-                try {
-                    Integer.parseInt(CreateProductDialog.this.avilableCount.getText());
+                if (Double.parseDouble(CreateProductDialog.this.basePrice.getText()) > 0) {
                     try {
-                        Integer.parseInt(CreateProductDialog.this.year.getText());
-
-                        if (productType == "Carvan") {
+                        if (Integer.parseInt(CreateProductDialog.this.avilableCount.getText()) > 0) {
                             try {
-                                Integer.parseInt(CreateProductDialog.this.numberOfRooms.getText());
-
-                                CreateProductDialog.this.setVisible(false);
-                                CreateProductDialog.this.operationCanceled = false;
+                                if (Integer.parseInt(CreateProductDialog.this.year.getText()) > 0) {
+                                    if (productType == "Carvan") {
+                                        try {
+                                            if (Integer
+                                                    .parseInt(CreateProductDialog.this.numberOfRooms.getText()) > 0) {
+                                                CreateProductDialog.this.setVisible(false);
+                                                CreateProductDialog.this.operationCanceled = false;
+                                            } else {
+                                                JOptionPane.showMessageDialog(null,
+                                                        "Number of Rooms should be > 0.",
+                                                        "Invalid Input",
+                                                        JOptionPane.ERROR_MESSAGE);
+                                            }
+                                        } catch (NumberFormatException ex) {
+                                            JOptionPane.showMessageDialog(null,
+                                                    "Number of Rooms should be an integer number.",
+                                                    "Invalid Input",
+                                                    JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    } else if (productType == "Bus") {
+                                        try {
+                                            if (Integer.parseInt(
+                                                    CreateProductDialog.this.passengerCapacity.getText()) > 0) {
+                                                CreateProductDialog.this.setVisible(false);
+                                                CreateProductDialog.this.operationCanceled = false;
+                                            } else {
+                                                JOptionPane.showMessageDialog(null,
+                                                        "Passenger Capacity should be > 0.",
+                                                        "Invalid Input",
+                                                        JOptionPane.ERROR_MESSAGE);
+                                            }
+                                        } catch (NumberFormatException ex) {
+                                            JOptionPane.showMessageDialog(null,
+                                                    "Passenger Capacity should be an integer number.",
+                                                    "Invalid Input",
+                                                    JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    } else if (productType == "Car") {
+                                        CreateProductDialog.this.setVisible(false);
+                                        CreateProductDialog.this.operationCanceled = false;
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Year should be > 0.",
+                                            "Invalid Input",
+                                            JOptionPane.ERROR_MESSAGE);
+                                }
                             } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(null, "Number of Rooms should be an integer number.",
+                                JOptionPane.showMessageDialog(null, "Year should be an integer number.",
                                         "Invalid Input",
                                         JOptionPane.ERROR_MESSAGE);
                             }
-                        } else if (productType == "Bus") {
-                            try {
-                                Integer.parseInt(CreateProductDialog.this.passengerCapacity.getText());
-
-                                CreateProductDialog.this.setVisible(false);
-                                CreateProductDialog.this.operationCanceled = false;
-                            } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(null, "Passenger Capacity should be an integer number.",
-                                        "Invalid Input",
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        } else if (productType == "Car") {
-                            CreateProductDialog.this.setVisible(false);
-                            CreateProductDialog.this.operationCanceled = false;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Avilable Count should be > 0.",
+                                    "Invalid Input",
+                                    JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(null, "Year should be an integer number.", "Invalid Input",
+                        JOptionPane.showMessageDialog(null, "Avilable Count should be an integer number.",
+                                "Invalid Input",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Avilable Count should be an integer number.", "Invalid Input",
+                } else {
+                    JOptionPane.showMessageDialog(null, "Base Price should be > 0", "Invalid Input",
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Salary should be a real number", "Invalid Input",
+                JOptionPane.showMessageDialog(null, "Base Price should be a real number", "Invalid Input",
                         JOptionPane.ERROR_MESSAGE);
-
             }
         }
     }
@@ -782,14 +815,20 @@ class ProductDiscountDialog extends JDialog {
                     double oldPrice = db.getProductPrice(ProductDiscountDialog.this.productId.getText());
 
                     try {
-                        db.applyProductDiscount(ProductDiscountDialog.this.productId.getText(),
-                                Double.parseDouble(ProductDiscountDialog.this.discountPercentage.getText()));
-                        JOptionPane.showMessageDialog(null,
-                                "Product price updated from " + oldPrice + " to "
-                                        + db.getProductPrice(
-                                                ProductDiscountDialog.this.productId.getText()),
-                                "Product Count Updated",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        if (Double.parseDouble(ProductDiscountDialog.this.discountPercentage.getText()) > 0) {
+                            db.applyProductDiscount(ProductDiscountDialog.this.productId.getText(),
+                                    Double.parseDouble(ProductDiscountDialog.this.discountPercentage.getText()));
+                            JOptionPane.showMessageDialog(null,
+                                    "Product price updated from " + oldPrice + " to "
+                                            + db.getProductPrice(
+                                                    ProductDiscountDialog.this.productId.getText()),
+                                    "Product Count Updated",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error: Discount Percentage should be > 0.",
+                                    "Error Not Integer",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     } catch (NumberFormatException e) {
                         JOptionPane.showMessageDialog(null, "Error: Discount Percentage should be double number.",
                                 "Error Not Integer",
