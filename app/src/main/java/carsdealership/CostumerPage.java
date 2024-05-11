@@ -55,8 +55,16 @@ class CostumerPage extends JPanel {
 
         try (Database db = new Database()) {
             myStatisticsBox
-                    .add(new JLabel("Count of Purchases: " + db.getPurchasesCountByCostumerId(parent.currentUserId)));
-            parent.container.remove(this);
+                    .add(new JLabel("Count of Purchases: " + db.getPurchasesCountByCostumerId(parent.currentUserId) + "  "));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        try (Database db = new Database()) {
+            myStatisticsBox
+                    .add(new JLabel("Loyality Points: " + db.getCostumerLoyalityPoints(parent.currentUserId)));
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage(), "SQLException",

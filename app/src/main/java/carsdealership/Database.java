@@ -269,6 +269,7 @@ class Database implements AutoCloseable {
         stmt.executeUpdate();
 
         this.decreaseProductAvilableCount(operation.getProductId());
+        this.increaseCostumerLoyalityPoints(operation.getCostomerId());
         this.linkProductWithSaleOperation(operation.getProductId(), operation.getId());
     }
 
@@ -289,6 +290,15 @@ class Database implements AutoCloseable {
     public void decreaseProductAvilableCount(String id) throws SQLException {
         PreparedStatement stmt = this.connection
                 .prepareStatement("UPDATE Products SET availableCount = availableCount - 1 WHERE id = ?");
+
+        stmt.setString(1, id);
+
+        stmt.executeUpdate();
+    }
+
+    public void increaseCostumerLoyalityPoints(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("UPDATE Users SET loyalityPoints = loyalityPoints + 10 WHERE id = ?");
 
         stmt.setString(1, id);
 
@@ -568,6 +578,17 @@ class Database implements AutoCloseable {
         stmt.setString(1, id);
 
         int count = stmt.executeQuery().getInt("Count");
+
+        return count;
+    }
+
+    public Integer getCostumerLoyalityPoints(String id) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT loyalityPoints FROM Users WHERE id = ?");
+
+        stmt.setString(1, id);
+
+        int count = stmt.executeQuery().getInt("loyalityPoints");
 
         return count;
     }
