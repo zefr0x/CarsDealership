@@ -103,7 +103,8 @@ class CostumerPage extends JPanel {
     private class PreviousPurchasesButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            JOptionPane.showMessageDialog(CostumerPage.this, "You have no previous purchases!");
+            PreviousPurchasesListDialog dialog = new PreviousPurchasesListDialog(parent, true, parent.currentUserId);
+            dialog.setVisible(true);
         }
     }
 }

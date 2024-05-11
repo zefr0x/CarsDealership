@@ -613,6 +613,25 @@ class Database implements AutoCloseable {
 
     }
 
+    public List<SaleOperation> getPreviousPurchasesList(String costumerId) throws SQLException {
+        PreparedStatement stmt = this.connection
+                .prepareStatement("SELECT * FROM SaleOperation WHERE costumerId = ?");
+
+        stmt.setString(1, costumerId);
+
+        ResultSet result = stmt.executeQuery();
+
+        List<SaleOperation> list = new ArrayList<>();
+
+        while (result.next()) {
+            list.add(new SaleOperation(result.getString("id"), result.getString("costumerId"),
+                    result.getString("salesmanId"), null, result.getString("paymentMethod"), result.getLong("time")));
+        }
+
+        return list;
+
+    }
+
     public List<Car> getCarsList() throws SQLException {
         Statement stmt = this.connection.createStatement();
 
