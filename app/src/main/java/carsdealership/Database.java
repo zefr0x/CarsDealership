@@ -24,26 +24,26 @@ class Database implements AutoCloseable {
 
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS Users (
-                        id VARCHAR(36) UNIQUE NOT NULL,
-                        username VARCHAR(25) UNIQUE NOT NULL,
-                        password VARCHAR(31) NOT NULL,
-                        fName VARCHAR(25) NOT NULL,
-                        lName VARCHAR(25) NOT NULL,
-                        userType VARCHAR(9) CHECK(userType IN ('employee', 'costumer')) NOT NULL,
+                        id TEXT UNIQUE NOT NULL,
+                        username TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL,
+                        fName TEXT NOT NULL,
+                        lName TEXT NOT NULL,
+                        userType TEXT CHECK(userType IN ('employee', 'costumer')) NOT NULL,
                         salary DECIMAL,
-                        employeeType VARCHAR(8) CHECK(employeeType IN ('admin', 'salesman')),
+                        employeeType TEXT CHECK(employeeType IN ('admin', 'salesman')),
                         isOwner BOOLEAN,
-                        branch VARCHAR(35),
-                        phone VARCHAR(10),
-                        email VARCHAR(100),
+                        branch TEXT,
+                        phone TEXT,
+                        email TEXT,
                         loyalityPoints INT,
                         PRIMARY KEY (id)
                     );
                 """);
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS AdminManagesSalesMan (
-                        adminId VARCHAR(36),
-                        salesManId VARCHAR(36),
+                        adminId TEXT,
+                        salesManId TEXT,
                         FOREIGN KEY (adminId) REFERENCES Users(id) ON DELETE CASCADE,
                         FOREIGN KEY (salesManId) REFERENCES Users(id) ON DELETE CASCADE
                     );
@@ -51,16 +51,16 @@ class Database implements AutoCloseable {
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS Offices (
                         id INT NOT NULL,
-                        adminId VARCHAR(36),
+                        adminId TEXT,
                         FOREIGN KEY (adminId) REFERENCES Users(id) ON DELETE SET NULL
                     );
                 """);
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS SaleOperation (
-                        id VARCHAR(36) UNIQUE NOT NULL,
-                        costumerId VARCHAR(36) NOT NULL,
-                        salesmanId VARCHAR(36),
-                        paymentMethod VARCHAR(5) CHECK(paymentMethod IN ('Visa', 'Mada', 'Cache')) NOT NULL,
+                        id TEXT UNIQUE NOT NULL,
+                        costumerId TEXT NOT NULL,
+                        salesmanId TEXT,
+                        paymentMethod TEXT CHECK(paymentMethod IN ('Visa', 'Mada', 'Cache')) NOT NULL,
                         time DATETIME NOT NULL,
                         PRIMARY KEY (id),
                         FOREIGN KEY (costumerId) REFERENCES Users(id) ON DELETE CASCADE
@@ -69,18 +69,18 @@ class Database implements AutoCloseable {
                 """);
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS Products (
-                        id VARCHAR(36) UNIQUE NOT NULL,
-                        name VARCHAR(30) NOT NULL,
+                        id TEXT UNIQUE NOT NULL,
+                        name TEXT NOT NULL,
                         basePrice FLOAT NOT NULL,
                         availableCount INT NOT NULL,
-                        productType VARCHAR(7) CHECK(productType IN ('vehicle')) NOT NULL,
-                        model VARCHAR(30),
+                        productType TEXT CHECK(productType IN ('vehicle')) NOT NULL,
+                        model TEXT,
                         year INT,
-                        vehicleId VARCHAR(17) UNIQUE,
-                        color VARCHAR(25),
-                        manufacturer VARCHAR(35),
-                        fuelType VARCHAR(5) CHECK(fuelType IN ('Gasoline95', 'Gasoline91', 'Diesel')),
-                        vehicleType VARCHAR(5) CHECK(vehicleType IN ('car', 'bus', 'carvan')),
+                        vehicleId TEXT UNIQUE,
+                        color TEXT,
+                        manufacturer TEXT,
+                        fuelType TEXT CHECK(fuelType IN ('Gasoline95', 'Gasoline91', 'Diesel')),
+                        vehicleType TEXT CHECK(vehicleType IN ('car', 'bus', 'carvan')),
                         hasSencsors BOOLEAN,
                         hasCameras BOOLEAN,
                         passengerCapacity INT,
@@ -92,8 +92,8 @@ class Database implements AutoCloseable {
                 """);
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS ProductLinkedWithSaleOperations (
-                        POId VARCHAR(36) NOT NULL,
-                        productId VARCHAR(36) NOT NULL,
+                        POId TEXT NOT NULL,
+                        productId TEXT NOT NULL,
                         FOREIGN KEY (POId) REFERENCES SaleOperation(id) ON DELETE CASCADE,
                         FOREIGN KEY (productId) REFERENCES Products(id)
                     );
