@@ -36,7 +36,7 @@ class ChangePasswordDialog extends JDialog {
 
     ChangePasswordDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
-        this.setTitle("Product Discount");
+        this.setTitle("Change My Password");
         this.setMinimumSize(new java.awt.Dimension(400, 100));
         this.setLayout(new GridLayout(2, 2));
 

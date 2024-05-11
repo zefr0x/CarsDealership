@@ -30,6 +30,7 @@ class LoginDialog extends JDialog {
 
     LoginDialog(final JFrame parent, boolean modal) {
         super(parent, modal);
+        this.setTitle("Login Dialog");
         this.setMinimumSize(new java.awt.Dimension(300, 200));
         this.setLayout(new GridLayout(3, 2));
 
