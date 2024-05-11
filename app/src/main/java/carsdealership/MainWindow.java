@@ -36,7 +36,7 @@ public class MainWindow extends JFrame {
     MainWindow() {
         super("Cars Dealership");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new java.awt.Dimension(900, 700));
+        this.setMinimumSize(new java.awt.Dimension(1000, 700));
 
         container = this.getContentPane();
         cardLayout = new CardLayout();
