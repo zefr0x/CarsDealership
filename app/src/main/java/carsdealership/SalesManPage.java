@@ -48,7 +48,7 @@ class SalesManPage extends JPanel {
         this.add(footerPanel, BorderLayout.SOUTH);
 
         // Page Title
-        JLabel title = new JLabel("SalesMan Page");
+        JLabel title = new JLabel("SalesMan Page (" + parent.currentUsername +")");
         title.setFont(new Font("Serf", Font.BOLD, 20));
         headerPanel.add(title);
 

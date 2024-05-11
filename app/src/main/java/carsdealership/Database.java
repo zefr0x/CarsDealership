@@ -48,6 +48,7 @@ class Database implements AutoCloseable {
                         FOREIGN KEY (salesManId) REFERENCES Users(id) ON DELETE CASCADE
                     );
                 """);
+        // TODO: Implement logic for the Offices table.
         stmt.addBatch("""
                     CREATE TABLE IF NOT EXISTS Offices (
                         id INT NOT NULL,

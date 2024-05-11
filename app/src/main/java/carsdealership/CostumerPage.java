@@ -35,7 +35,7 @@ class CostumerPage extends JPanel {
         this.add(footerPanel, BorderLayout.SOUTH);
 
         // Page Title
-        JLabel pageTitle = new JLabel("Costumer DashBoard");
+        JLabel pageTitle = new JLabel("Costumer DashBoard (" + parent.currentUsername +")");
         pageTitle.setFont(new Font("Serf", Font.BOLD, 20));
         headerPanel.add(pageTitle);
 

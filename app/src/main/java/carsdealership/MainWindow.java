@@ -28,6 +28,7 @@ public class MainWindow extends JFrame {
     CardLayout cardLayout;
 
     String currentUserId;
+    String currentUsername;
 
     MainWindow() {
         super("Cars Dealership");
@@ -94,6 +95,7 @@ public class MainWindow extends JFrame {
             dialog.setVisible(true);
 
             MainWindow.this.currentUserId = dialog.userId;
+            MainWindow.this.currentUsername = dialog.userNameField.getText();
 
             if (dialog.getUserType() == UserType.Admin) {
                 MainWindow.this.add(new AdminPage(MainWindow.this), ADMIN_MAIN_PANEL);
