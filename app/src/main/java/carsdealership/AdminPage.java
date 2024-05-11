@@ -628,14 +628,16 @@ class CreateProductDialog extends JDialog {
     private class CreateButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
+            String productType = CreateProductDialog.this.productType.getSelectedItem().toString();
+
             try {
                 Double.parseDouble(CreateProductDialog.this.basePrice.getText());
                 try {
                     Integer.parseInt(CreateProductDialog.this.avilableCount.getText());
                     try {
                         Integer.parseInt(CreateProductDialog.this.year.getText());
-                        try {
-                            Integer.parseInt(CreateProductDialog.this.passengerCapacity.getText());
+
+                        if (productType == "Carvan") {
                             try {
                                 Integer.parseInt(CreateProductDialog.this.numberOfRooms.getText());
 
@@ -646,10 +648,20 @@ class CreateProductDialog extends JDialog {
                                         "Invalid Input",
                                         JOptionPane.ERROR_MESSAGE);
                             }
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "Passenger Capacity should be an integer number.",
-                                    "Invalid Input",
-                                    JOptionPane.ERROR_MESSAGE);
+                        } else if (productType == "Bus") {
+                            try {
+                                Integer.parseInt(CreateProductDialog.this.passengerCapacity.getText());
+
+                                CreateProductDialog.this.setVisible(false);
+                                CreateProductDialog.this.operationCanceled = false;
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(null, "Passenger Capacity should be an integer number.",
+                                        "Invalid Input",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else if (productType == "Car") {
+                            CreateProductDialog.this.setVisible(false);
+                            CreateProductDialog.this.operationCanceled = false;
                         }
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(null, "Year should be an integer number.", "Invalid Input",
